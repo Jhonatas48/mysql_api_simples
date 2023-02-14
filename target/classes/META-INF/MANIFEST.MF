@@ -1,5 +1,0 @@
-Manifest-Version: 1.0
-Built-By: Cristiano TI
-Build-Jdk: 17.0.3
-Created-By: Maven Integration for Eclipse
-
