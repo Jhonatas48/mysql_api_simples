@@ -32,7 +32,9 @@ public class DeleteMysql implements SQLBuild<Delete>{
 	@Override
 	public String buildSQL(Delete objectType) {
 		
-		return null;
+	    String sql = "DELETE FROM "+objectType.getTable()+" WHERE "+objectType.getFilter();
+		
+		return sql;
 	}
 
 	@Override

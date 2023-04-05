@@ -29,13 +29,20 @@ public class Principal {
 	    ConnectionManager.addConnection(connection);
 		
 		//ConnectionManager.addConnection(new SqliteConnection("log3.db"));
-	    new Transaction().create().setTable("teste2").addColumn("id","integer",new PrimaryKey().addAutoIncrement()).commit();
-		new Transaction().create().setTable("teste3")
-		.addColumn("id","INTEGER",new PrimaryKey().addAutoIncrement())
-		.addColumn("teste","longtext")
-		.addColumn("idt", "integer",new ForeignKey().setTableForeign("teste2").setColumnForeign("id"))
-		.addColumn("idte", "integer",new ForeignKey().setTableForeign("teste2").setColumnForeign("id"))
-		.commit();
+	   // new Transaction().create().setTable("teste2").addColumn("id","integer",new PrimaryKey().addAutoIncrement()).commit();
+	    new Transaction().create()
+        .setTable("machinesProfile")
+        .addColumn("id", "INTEGER", 
+        		new PrimaryKey().addAutoIncrement())
+        .addColumn("nick", "VARCHAR (16)")
+        .addColumn("id_discord", "VARCHAR (50)")
+        .commit();
+	    new Transaction()
+	    .update().setTable("machinesProfile")
+	    .addColumn("nick", "lm")
+	    .addColumn("id_discord", "teste")
+	    .filter("nick='lm'")
+	    .commit();
 	 
 		/*
 	   Create c = new Create();
