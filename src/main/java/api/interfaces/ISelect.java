@@ -10,7 +10,7 @@ public interface ISelect  extends ISQLParameters<ISelect>{
 	public Result queryResult();
 	
 	public Result queryResult(boolean useLogTransaction);
-	
+	public Exception getException();
 	/*
 	 * Select the column in the query Result
 	 * */

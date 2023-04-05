@@ -13,9 +13,9 @@ public class SqliteConnection extends ConnectionAtributesFiles implements IConne
 	
 	public SqliteConnection(String nameFile) {
 		Checkers.validateStringNotNull(nameFile, "nameFile");
-		String[] nameWiExtension = nameFile.split(".");
+		String[] nameWiExtension = nameFile.split("\\.");
 		
-		if(nameWiExtension.length == 0) {
+		if(nameWiExtension.length < 2) {
 			this.setNameFile(nameFile+".db");
 			return;
 		}

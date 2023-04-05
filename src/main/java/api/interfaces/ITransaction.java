@@ -12,4 +12,5 @@ public interface ITransaction {
 	
 	public IDelete delete();
 	
+	public Exception getException();
 }

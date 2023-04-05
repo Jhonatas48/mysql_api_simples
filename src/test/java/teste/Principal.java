@@ -1,10 +1,14 @@
 package teste;
 
 
+import java.util.function.Consumer;
+
 import api.connection.ConnectionManager;
 import api.connection.impl.MysqlConnection;
 import api.connection.impl.SqliteConnection;
+import api.exception.TransactionTypeIsNullException;
 import api.models.Transaction;
+import api.models.atributes.ForeignKey;
 import api.models.atributes.PrimaryKey;
 
 
@@ -23,9 +27,16 @@ public class Principal {
 		connection.setUsername("root");
 		connection.setPassword("");
 	    ConnectionManager.addConnection(connection);
-		ConnectionManager.addConnection(new SqliteConnection("log3"));
+		
+		//ConnectionManager.addConnection(new SqliteConnection("log3.db"));
+	    new Transaction().create().setTable("teste2").addColumn("id","integer",new PrimaryKey().addAutoIncrement()).commit();
+		new Transaction().create().setTable("teste3")
+		.addColumn("id","INTEGER",new PrimaryKey().addAutoIncrement())
+		.addColumn("teste","longtext")
+		.addColumn("idt", "integer",new ForeignKey().setTableForeign("teste2").setColumnForeign("id"))
+		.addColumn("idte", "integer",new ForeignKey().setTableForeign("teste2").setColumnForeign("id"))
+		.commit();
 	 
-		new Transaction().update().setTable("teste3").addColumn("teste","2").filter("id='1'").commit();
 		/*
 	   Create c = new Create();
 	   c.setTable("table");

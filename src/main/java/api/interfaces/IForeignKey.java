@@ -8,15 +8,15 @@ public interface IForeignKey extends ICreateAtributes<IForeignKey>{
 	/**
 	 * @param columnBame the columnForeign to set
 	 */
-	public IForeignKey setColumnForeign(String columnForeign);
+	public IForeignKey setColumnForeign( String columnForeign);
 	/**
 	 * @return the columnName
 	 */
-	public String getColumnName();
+	public String getOriginColumnName();
 	/**
 	 * @param columnBame the columnBame to set
 	 */
-	public IForeignKey setColumnName(String columnName);
+	public IForeignKey setOriginColumnName(String columnName);
 	/**
 	 * @return the tableForeign
 	 */

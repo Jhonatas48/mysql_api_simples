@@ -15,6 +15,7 @@ class SelectImpl extends PerformTransaction implements ISelect {
 	private List<String>columns = new ArrayList<>();
 	private boolean useTableLog;
 	private LinkedHashMap<String,String>tableInnerJoin=new LinkedHashMap<>();
+	
 	@Override
 	public ISelect setTable(String table) {
 		this.table= table;
@@ -89,6 +90,12 @@ class SelectImpl extends PerformTransaction implements ISelect {
 	public ISelect filter(String filter) {
 		this.filter=filter;
 		return this;
+	}
+
+	@Override
+	public Exception getException() {
+		
+		return getGetErrorException();
 	}
 
 }

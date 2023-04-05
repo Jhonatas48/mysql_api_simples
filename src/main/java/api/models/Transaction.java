@@ -51,6 +51,11 @@ public class Transaction implements ITransaction {
 		// TODO Auto-generated method stub
 		return new DeleteImpl();
 	}
+	@Override
+	public Exception getException() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 
 }

@@ -15,19 +15,22 @@ public class ForeignKey implements IForeignKey{
 		return columnForeign;
 	}
 	public IForeignKey setColumnForeign(String columnForeign) {
+		//Checkers.validateStringNotNull(columnForeign, "columnForeign");
 		this.columnForeign = columnForeign;
 		return this;
 	}
 	/**
 	 * @return the columnName
 	 */
-	public String getColumnName() {
+	public String getOriginColumnName() {
+		
 		return columnName;
 	}
 	/**
 	 * @param columnBame the columnBame to set
 	 */
-	public IForeignKey setColumnName(String columnName) {
+	public IForeignKey setOriginColumnName(String columnName) {
+		//Checkers.validateStringNotNull(columnName, "originColumnName");
 		this.columnName = columnName;
 		return this;
 	}
@@ -41,6 +44,7 @@ public class ForeignKey implements IForeignKey{
 	 * @param tableForeign the tableForeign to set
 	 */
 	public IForeignKey setTableForeign(String tableForeign) {
+		//Checkers.validateStringNotNull(tableForeign, "tableForeign");
 		this.tableForeign = tableForeign;
 		return this;
 	}

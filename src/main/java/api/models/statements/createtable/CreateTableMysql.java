@@ -35,19 +35,22 @@ public class CreateTableMysql implements SQLBuild<Create> {
 		
 		int size = objectType.getColums().size();
 		int counter =0;
-		
+		sql+=objectType.getPrimaryKey().getColumnName()+" "+objectType.getPrimaryKey().getValue();
+		sql+=objectType.getPrimaryKey().isAutoIncrement()==true?" AUTO_INCREMENT":"";
+        
 		for(Map.Entry<String,Object>value:objectType.getColums().entrySet()) {
 			
 			if((size-1) ==counter) {
-				sql = sql+value.getKey()+" "+value.getValue()+")";
+				sql = sql+","+value.getKey()+" "+value.getValue();
 			}else {
-				sql = sql+value.getKey()+" "+value.getValue()+",";
+				sql = sql+","+value.getKey()+" "+value.getValue();
 			}
 			counter++;
 		}
+		
 		counter=0;
 		size=objectType.getForeignKeys().size();
-	
+		sql+=",PRIMARY KEY("+objectType.getPrimaryKey().getColumnName()+")";
 		if(size ==0) {
 			sql+=")";
 			return sql;
@@ -56,13 +59,14 @@ public class CreateTableMysql implements SQLBuild<Create> {
 		for(IForeignKey foreignKey:objectType.getForeignKeys()) {
 			if((size-1) ==counter) {
 				
-				sql = sql+",FOREIGN KEY("+foreignKey.getColumnName()+") REFERENCES "+foreignKey.getTableForeign()+"("+foreignKey.getColumnForeign()+"))";
+				sql = sql+",FOREIGN KEY("+foreignKey.getOriginColumnName()+") REFERENCES "+foreignKey.getTableForeign()+"("+foreignKey.getColumnForeign()+"))";
 			
 			}else {
-				sql = sql+",FOREIGN KEY(\""+foreignKey.getColumnName()+"\") REFERENCES \""+foreignKey.getTableForeign()+"\"(\""+foreignKey.getColumnForeign()+"\")";
+				sql = sql+",FOREIGN KEY("+foreignKey.getOriginColumnName()+") REFERENCES "+foreignKey.getTableForeign()+"("+foreignKey.getColumnForeign()+")";
 			}
 			counter++;
 		}
+		//sql+=")";
 		return sql;
 	}
 	@Override

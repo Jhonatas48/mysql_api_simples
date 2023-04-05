@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.function.Consumer;
 
 import api.connection.IConnection;
 import api.connection.impl.SQLBuildManager;
@@ -31,8 +32,10 @@ class CommitActionImpl extends PerformTransaction implements ICommitAction {
 	private IPrimaryKey  primaryKey;
 	private boolean autoIncrement= false;
 	private List<IForeignKey>foreignKeys = new ArrayList<>();
+
 	@Override
-	public boolean commit() {
+	public boolean commit(Consumer<? super Throwable> failure) {
+		
 		Checkers.validateStringNotNull(table, "table");
 		if(type==TransactionType.SELECT) {
 			throw new TransactionInvalidException();
@@ -48,7 +51,7 @@ class CommitActionImpl extends PerformTransaction implements ICommitAction {
 			
 			throw new ColumnsIsNullException();
 		}
-		
+		boolean result = false;
 	    switch (type.toString().toUpperCase()) {
 		case "CREATE_TABLE":
 			Create create = new Create();
@@ -62,8 +65,8 @@ class CommitActionImpl extends PerformTransaction implements ICommitAction {
 			if(connection != null) {
 				return createTable(SQLBuildManager.buildSQL(connection.geConnectionType(),TransactionType.CREATE_TABLE, create), connection);
 			}
-			return createTable(create);
-			
+			result= createTable(create);
+			break;
 		case "INSERT":
 			Insert insert = new Insert();
 			insert.setTable(table);
@@ -87,8 +90,8 @@ class CommitActionImpl extends PerformTransaction implements ICommitAction {
 			insert.setColumns(columnsInsert);
 			insert.setData(values);
 
-			return tableInsert(insert);			
-
+			result= tableInsert(insert);			
+			break;
 	    case "UPDATE":
 	    	UpdateValue updateValue = new UpdateValue();
 	    	for(Entry<String,String> columnUpdate:columns.entrySet())
@@ -99,20 +102,29 @@ class CommitActionImpl extends PerformTransaction implements ICommitAction {
 	    	Update update = new Update(table, updateValue,filter);
 	    	
 	    	
-	       return rowUpdate(update);
-	       
+	       result= rowUpdate(update);
+	       break;
 	    case "DELETE":
 	    	
 	    	Delete delete = new Delete(table,filter);
 	    	
 	    	
-	       return rowDelete(delete);
-	    	
+	    	result= rowDelete(delete);
+	    	break;
+	    }
+	    if(failure != null && getGetErrorException() != null) {
+	    	failure.accept(getGetErrorException());
 	    }
 	    
-	    
-		return false;
-	//	return createTable(create);
+		return result;
+		
+		
+	}
+
+	@Override
+	public boolean commit() {
+		return this.commit(null);
+	
 	}
 	
 	private boolean checkEmptyColumns() {
@@ -226,6 +238,14 @@ class CommitActionImpl extends PerformTransaction implements ICommitAction {
 	protected void setForeignKeys(List<IForeignKey> foreignKeys) {
 		this.foreignKeys = foreignKeys;
 	}
+
+	
+	public Exception getException() {
+	
+		return getGetErrorException();
+	}
+
+
 	
 
 }

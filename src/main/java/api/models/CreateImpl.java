@@ -3,6 +3,7 @@ package api.models;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.function.Consumer;
 
 import api.connection.IConnection;
 import api.exception.ColumnsIsNullException;
@@ -25,6 +26,7 @@ class CreateImpl implements ICreate{
 	private IPrimaryKey primaryKey;
 	private boolean autoIncrement= false;
 	private List<IForeignKey>foreignKeys = new ArrayList<>();
+	
 	@Override
 	public ICreate setTable(String table) {
 		
@@ -37,10 +39,10 @@ class CreateImpl implements ICreate{
 		Checkers.validateStringNotNull(column, "column");
 		columns.put(column,value);
 		return this;
+		
 	}
-
 	@Override
-	public boolean commit() {
+	public boolean commit(Consumer<? super Throwable> failure) {
 		Checkers.validateStringNotNull(table, "table");
 		if(!Checkers.isObjectNotNull(primaryKey)) {
 			throw new ColumnsIsNullException("The Primakey Key is not defined");
@@ -60,7 +62,17 @@ class CreateImpl implements ICreate{
 		commitAction.setTable(table);
 		commitAction.setPrimaryKey(this.primaryKey);
 		commitAction.setForeignKeys(foreignKeys);
-		return commitAction.commit();
+		boolean result = commitAction.commit();
+		if(failure != null && commitAction.getGetErrorException() != null) {
+		  failure.accept(commitAction.getGetErrorException());	
+		}
+		return result;
+		
+	}
+	
+	@Override
+	public boolean commit() {
+		return this.commit(null);
 	}
 
 	@Override
@@ -109,9 +121,9 @@ class CreateImpl implements ICreate{
 			IForeignKey  foreignKey = (ForeignKey)createAtribute;
 			Checkers.validateStringNotNull(foreignKey.getColumnForeign(), "columnForeign");
 			Checkers.validateStringNotNull(foreignKey.getTableForeign(), "tableForeign");
-			if(Checkers.isEmpty(foreignKey.getColumnName())) {
+			if(Checkers.isEmpty(foreignKey.getOriginColumnName())) {
 				
-				foreignKey.setColumnName(column);
+				foreignKey.setOriginColumnName(column);
 			
 			}
 			
@@ -186,7 +198,7 @@ class CreateImpl implements ICreate{
 	public IConnection<?> getConnection() {
 		return connection;
 	}
-	
-	
+
+
 
 }

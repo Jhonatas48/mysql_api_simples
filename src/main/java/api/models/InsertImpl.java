@@ -1,6 +1,7 @@
 package api.models;
 
 import java.util.LinkedHashMap;
+import java.util.function.Consumer;
 
 import api.interfaces.IInsert;
 import api.models.enums.TransactionType;
@@ -21,12 +22,23 @@ class InsertImpl implements IInsert{
 	}
 	@Override
 	public boolean commit() {
-	    CommitActionImpl commitAction = new CommitActionImpl();
-	    commitAction.setTable(table);
-	    commitAction.setType(TransactionType.INSERT);
-	    commitAction.setColumns(columns);
-	    return commitAction.commit();
+	   
+		return this.commit(null);
 		
+	}
+	@Override
+	public boolean commit(Consumer<? super Throwable> failure) {
+		// TODO Auto-generated method stub
+		 CommitActionImpl commitAction = new CommitActionImpl();
+		    commitAction.setTable(table);
+		    commitAction.setType(TransactionType.INSERT);
+		    commitAction.setColumns(columns);
+		   boolean result=  commitAction.commit();
+		   if(failure !=null) {
+			   failure.accept(commitAction.getGetErrorException());
+		   }
+		   
+		return result;
 	}
 	
 	

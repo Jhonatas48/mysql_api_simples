@@ -70,10 +70,10 @@ public class CreateTableSQLITE implements SQLBuild<Create> {
 		for(IForeignKey foreignKey:objectType.getForeignKeys()) {
 			if((size-1) ==counter) {
 				
-				sql = sql+",FOREIGN KEY(\""+foreignKey.getColumnName()+"\") REFERENCES \""+foreignKey.getTableForeign()+"\"(\""+foreignKey.getColumnForeign()+"\")";
+				sql = sql+",FOREIGN KEY(\""+foreignKey.getOriginColumnName()+"\") REFERENCES \""+foreignKey.getTableForeign()+"\"(\""+foreignKey.getColumnForeign()+"\")";
 			
 			}else {
-				sql = sql+",FOREIGN KEY(\""+foreignKey.getColumnName()+"\") REFERENCES \""+foreignKey.getTableForeign()+"\"(\""+foreignKey.getColumnForeign()+"\")";
+				sql = sql+",FOREIGN KEY(\""+foreignKey.getOriginColumnName()+"\") REFERENCES \""+foreignKey.getTableForeign()+"\"(\""+foreignKey.getColumnForeign()+"\")";
 			}
 			counter++;
 		}

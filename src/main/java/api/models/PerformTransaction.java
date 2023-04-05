@@ -28,7 +28,7 @@ import api.models.utils.Checkers;
  abstract class PerformTransaction {
 	
 	private static boolean debugEnabled = false;
-	
+	private static Exception exception = null;
 	public PerformTransaction() {
 		
 	}
@@ -67,7 +67,7 @@ import api.models.utils.Checkers;
 			connection.close();
 			return true;
 		} catch (SQLException e) {
-			
+			exception = e;
 			e.printStackTrace();
 			return false;
 		}
@@ -93,7 +93,7 @@ import api.models.utils.Checkers;
 			return true;
 			
 		} catch (SQLException e) {
-			
+			exception = e;
 			e.printStackTrace();
 		}
 		return false;
@@ -120,6 +120,7 @@ import api.models.utils.Checkers;
             stmt.execute(sql);
 
         } catch (SQLException e) {
+        	exception = e;
             e.printStackTrace();
         } finally {
             if(stmt != null) {
@@ -205,6 +206,7 @@ import api.models.utils.Checkers;
           		
 
         } catch (SQLException e) {
+        	exception = e;
             e.printStackTrace();
         } /*finally {
             if(stmt != null) {
@@ -305,7 +307,7 @@ import api.models.utils.Checkers;
             
             
         } catch (SQLException e) {
-        	
+        	exception = e;
             e.printStackTrace();
         
         }
@@ -334,9 +336,9 @@ import api.models.utils.Checkers;
              sql= SQLBuildManager.buildSQL(ConnectionManager.getConnectionType(),TransactionType.DELETE, builders[0]);
         
         }else{
-        	
+        
         	 for(Delete delete: builders) {
-        		 
+        			
              	sql=sql+SQLBuildManager.buildSQL(ConnectionManager.getConnectionType(),TransactionType.DELETE, delete)+";";
              
              }
@@ -344,17 +346,21 @@ import api.models.utils.Checkers;
         
         try(PreparedStatement statement = conection.prepareStatement(sql)) {
         	
-         
+        	List<Object> valuesFields = new ArrayList<>();
+            for(Delete builder:builders) {
+            	 valuesFields.add(builder.getFilter());
+           
+            }
            
             if(statement.executeUpdate() >0) {
-            	
+            	registerTransactionLog(sql,valuesFields, TransactionType.DELETE);
             	return true;
             }
           
            
           
         } catch (SQLException e) {
-        	
+        	exception = e;
             e.printStackTrace();
         
         }
@@ -406,12 +412,13 @@ import api.models.utils.Checkers;
             return result;
 
         } catch (SQLException e) {
-        	
+        	exception = e;
             e.printStackTrace();
             try {
 				connection.close();
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
+				exception = e1;
 				e1.printStackTrace();
 			}
             return new Result();
@@ -483,7 +490,7 @@ import api.models.utils.Checkers;
 			
 			
 		} catch (SQLException | ConnectException e) {
-		
+			 exception = e;
 			e.printStackTrace();
 			return false;
 		}
@@ -522,10 +529,12 @@ import api.models.utils.Checkers;
 			
 			
 		} catch (SQLException e) {
+			exception = e;
 			Logger.getLogger("apimysql").error("Erro ao inserir um registro na tabela transactions_values");
 			e.printStackTrace();
 			return false;
 		} catch (ConnectException e) {
+			exception = e;
 			//Logger.getLogger("apimysql").error("Erro ao tentar abrir conexao com sqlite (log.db)");
 			e.printStackTrace();
 			return false;
@@ -562,12 +571,14 @@ import api.models.utils.Checkers;
     			
     			
     		} catch (SQLException e) {
+    			exception = e;
     			Logger.getLogger("apimysql").error("Erro ao inserir um registro na tabela lastest_transaction");
     			
     			e.printStackTrace();
     
     			return false;
     		} catch (ConnectException e) {
+    			exception = e;
     			//Logger.getLogger("apimysql").error("Erro ao tentar abrir conexao com sqlite (log.db)");
     			e.printStackTrace();
     			return false;
@@ -630,6 +641,7 @@ import api.models.utils.Checkers;
             stmt = conection.createStatement();
             stmt.execute(sql);
         } catch (SQLException e) {
+        	exception = e;
             e.printStackTrace();
         } finally {
             try {
@@ -642,5 +654,9 @@ import api.models.utils.Checkers;
         }
         return false;
     }
+
+	public Exception getGetErrorException() {
+		return exception;
+	}
     
 }
