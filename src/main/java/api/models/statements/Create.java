@@ -6,6 +6,7 @@ import java.util.List;
 
 import api.interfaces.IForeignKey;
 import api.interfaces.IPrimaryKey;
+import api.interfaces.IUnique;
 
 public class Create {
 
@@ -14,6 +15,7 @@ public class Create {
 	private IPrimaryKey primaryKey;
 	private boolean autoIncrement= false;
 	private List<IForeignKey>foreignKeys = new ArrayList<>();
+	private List<IUnique>unique = new ArrayList<>();
 	//private List<>
 	public Create() {
 		row = new Row();
@@ -47,7 +49,7 @@ public class Create {
 	public IPrimaryKey getPrimaryKey() {
 		return primaryKey;
 	}
-
+	
 	public void setPrimaryKey(IPrimaryKey primaryKey) {
 		this.primaryKey = primaryKey;
 	}
@@ -59,7 +61,14 @@ public class Create {
 	public void setAutoIncrement(boolean autoIncrement) {
 		this.autoIncrement = autoIncrement;
 	}
-	
+
+	public List<IUnique> getUniqueKeys() {
+		return unique;
+	}
+
+	public void setUniqueKeys(List<IUnique> unique) {
+		this.unique = unique;
+	}
 	
 	
 

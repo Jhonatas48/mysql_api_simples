@@ -47,6 +47,7 @@ public class MysqlConnection extends TCPConnectionAtributes implements IConnecti
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				//e.printStackTrace();
+				e.printStackTrace();
 				return null;
 			}
 			

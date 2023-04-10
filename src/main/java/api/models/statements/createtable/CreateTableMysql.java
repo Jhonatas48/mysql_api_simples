@@ -4,6 +4,7 @@ import java.util.Map;
 
 import api.connection.impl.SQLBuildManager;
 import api.interfaces.IForeignKey;
+import api.interfaces.IUnique;
 import api.models.enums.ConnectionType;
 import api.models.enums.TransactionType;
 import api.models.statements.Create;
@@ -50,9 +51,9 @@ public class CreateTableMysql implements SQLBuild<Create> {
 		
 		counter=0;
 		size=objectType.getForeignKeys().size();
-		sql+=",PRIMARY KEY("+objectType.getPrimaryKey().getColumnName()+")";
-		if(size ==0) {
-			sql+=")";
+		int sizeUnique = objectType.getUniqueKeys().size();
+		if(size ==0 && sizeUnique == 0) {
+			sql+=sql+=",PRIMARY KEY("+objectType.getPrimaryKey().getColumnName()+"))";
 			return sql;
 		}
 		
@@ -66,6 +67,11 @@ public class CreateTableMysql implements SQLBuild<Create> {
 			}
 			counter++;
 		}
+		
+		for(IUnique uniqueKeys : objectType.getUniqueKeys()) {
+			sql+= ",UNIQUE("+uniqueKeys.getColumns()+")";
+		}
+		sql+=",PRIMARY KEY("+objectType.getPrimaryKey().getColumnName()+"))";
 		//sql+=")";
 		return sql;
 	}

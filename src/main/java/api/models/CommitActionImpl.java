@@ -14,6 +14,7 @@ import api.exception.TransactionInvalidException;
 import api.interfaces.ICommitAction;
 import api.interfaces.IForeignKey;
 import api.interfaces.IPrimaryKey;
+import api.interfaces.IUnique;
 import api.models.enums.TransactionType;
 import api.models.statements.Create;
 import api.models.statements.Delete;
@@ -32,6 +33,21 @@ class CommitActionImpl extends PerformTransaction implements ICommitAction {
 	private IPrimaryKey  primaryKey;
 	private boolean autoIncrement= false;
 	private List<IForeignKey>foreignKeys = new ArrayList<>();
+	private List<IUnique>uniqueKeys = new ArrayList<>();
+
+	/**
+	 * @return the uniqueKeys
+	 */
+	protected List<IUnique> getUniqueKeys() {
+		return uniqueKeys;
+	}
+
+	/**
+	 * @param uniqueKeys the uniqueKeys to set
+	 */
+	protected void setUniqueKeys(List<IUnique> uniqueKeys) {
+		this.uniqueKeys = uniqueKeys;
+	}
 
 	@Override
 	public boolean commit(Consumer<? super Throwable> failure) {
@@ -58,6 +74,7 @@ class CommitActionImpl extends PerformTransaction implements ICommitAction {
 			create.setTable(table);
 			create.setForeignKeys(foreignKeys);
 			create.setPrimaryKey(primaryKey);
+			create.setUniqueKeys(uniqueKeys);
 			columns.entrySet().forEach(column->{
 				create.addColumn(column.getKey(), column.getValue());
 			});

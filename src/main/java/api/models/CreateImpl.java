@@ -13,6 +13,7 @@ import api.interfaces.ICreate;
 import api.interfaces.ICreateAtributes;
 import api.interfaces.IForeignKey;
 import api.interfaces.IPrimaryKey;
+import api.interfaces.IUnique;
 import api.models.atributes.ForeignKey;
 import api.models.enums.CreateAtributes;
 import api.models.enums.TransactionType;
@@ -26,7 +27,7 @@ class CreateImpl implements ICreate{
 	private IPrimaryKey primaryKey;
 	private boolean autoIncrement= false;
 	private List<IForeignKey>foreignKeys = new ArrayList<>();
-	
+	private List<IUnique>uniqueKeys = new ArrayList<>();
 	@Override
 	public ICreate setTable(String table) {
 		
@@ -62,6 +63,7 @@ class CreateImpl implements ICreate{
 		commitAction.setTable(table);
 		commitAction.setPrimaryKey(this.primaryKey);
 		commitAction.setForeignKeys(foreignKeys);
+		commitAction.setUniqueKeys(this.uniqueKeys);
 		boolean result = commitAction.commit();
 		if(failure != null && commitAction.getGetErrorException() != null) {
 		  failure.accept(commitAction.getGetErrorException());	
@@ -115,6 +117,11 @@ class CreateImpl implements ICreate{
 		
 		if(createAtribute.getType() == CreateAtributes.UNIQUE) {
 			columns.put(column,value);
+			IUnique uniqueKey = (IUnique)createAtribute.getAtribute();
+			if(uniqueKey.getColumnsQuantity() == 0) {
+				uniqueKey.addColumn(column);
+			}
+			this.uniqueKeys.add(uniqueKey);
 			return this;
 		}
 		if(createAtribute.getType() == CreateAtributes.FOREIGN_KEY) {
