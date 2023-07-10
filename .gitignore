@@ -1,7 +1,0 @@
-.settings
-target
-*.class
-*.db
-*.jar
-/src/test
-src/test/java/teste/Principal.java
