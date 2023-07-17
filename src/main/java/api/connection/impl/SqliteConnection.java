@@ -33,9 +33,11 @@ public class SqliteConnection extends ConnectionAtributesFiles implements IConne
 		Connection connection=null;
 		
 		try {
+			Class.forName("org.sqlite.JDBC");
+
 			connection = DriverManager.getConnection(getAtributesConnection());
 			
-		} catch (SQLException e) {
+		} catch (SQLException | ClassNotFoundException e) {
 			System.out.println("Erro ao abrir conexao com o SQLITE");
 			e.printStackTrace();
 		}

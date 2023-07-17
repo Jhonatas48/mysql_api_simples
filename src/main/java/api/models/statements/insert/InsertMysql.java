@@ -43,7 +43,7 @@ public class InsertMysql implements SQLBuild<Insert>{
 			}
 		}
              
-		System.out.println("MYSQL: "+sql);
+		//System.out.println("MYSQL: "+sql);
 		return sql;
 	}
 

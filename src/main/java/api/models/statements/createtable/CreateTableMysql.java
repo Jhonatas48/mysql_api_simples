@@ -53,7 +53,7 @@ public class CreateTableMysql implements SQLBuild<Create> {
 		size=objectType.getForeignKeys().size();
 		int sizeUnique = objectType.getUniqueKeys().size();
 		if(size ==0 && sizeUnique == 0) {
-			sql+=sql+=",PRIMARY KEY("+objectType.getPrimaryKey().getColumnName()+"))";
+			sql+=",PRIMARY KEY("+objectType.getPrimaryKey().getColumnName()+"))";
 			return sql;
 		}
 		
