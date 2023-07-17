@@ -85,7 +85,7 @@ import api.models.utils.Checkers;
 				throw new NullPointerException("Tabelas sem colunas,adicione as colunas primeiro");
 				
 			}
-			System.out.println("SQL: "+SQLBuildManager.buildSQL(ConnectionManager.getConnectionType(),TransactionType.CREATE_TABLE, create));
+			//System.out.println("SQL: "+SQLBuildManager.buildSQL(ConnectionManager.getConnectionType(),TransactionType.CREATE_TABLE, create));
 			PreparedStatement preparedStament = conection.prepareStatement(SQLBuildManager.buildSQL(ConnectionManager.getConnectionType(),TransactionType.CREATE_TABLE, create));
 			printDebbug(preparedStament);
 			preparedStament.execute();
@@ -152,7 +152,7 @@ import api.models.utils.Checkers;
         if(builders.length == 1) {
         	
              sql= SQLBuildManager.buildSQL(ConnectionManager.getConnectionType(),TransactionType.INSERT, builders[0]);
-             System.out.println("INSET: "+sql);
+            // System.out.println("INSET: "+sql);
             // sql=sql.replace("?",builders[0].getTable().toLowerCase());
         }else{
         	
@@ -174,7 +174,7 @@ import api.models.utils.Checkers;
                 }
             }
            */
-       System.out.println("sql: "+sql);
+       //System.out.println("sql: "+sql);
       //  = null;
         try {
         	 PreparedStatement  stmt = conection.prepareStatement(sql);
@@ -279,7 +279,7 @@ import api.models.utils.Checkers;
              
              }
         }
-        System.out.println(sql);
+        //System.out.println(sql);
         try(PreparedStatement stament = conection.prepareStatement(sql)) {
         	
         	int counter = 1;
