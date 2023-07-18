@@ -3,6 +3,13 @@
   <groupId>br.jhonatastomaz</groupId>
   <artifactId>api-mysql</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  <repositories>
+    <repository>
+        <id>github</id>
+        <name>Jhonatas48</name>
+        <url>https://maven.pkg.github.com/Jhonatas48/mysql_api_simples</url>
+    </repository>
+</repositories>
   <dependencies>
     <!-- https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc -->
 	<dependency>	
