@@ -1,9 +1,9 @@
 package mysql_api;
 
-import api.connection.ConnectionManager;
-import api.connection.impl.SqliteConnection;
-import api.models.Transaction;
-import api.models.atributes.PrimaryKey;
+import com.github.jhonatas48.api.connection.ConnectionManager;
+import com.github.jhonatas48.api.connection.impl.SqliteConnection;
+import com.github.jhonatas48.api.models.Transaction;
+import com.github.jhonatas48.api.models.atributes.PrimaryKey;
 
 public class Teste {
 

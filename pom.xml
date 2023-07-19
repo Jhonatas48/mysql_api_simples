@@ -1,14 +1,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>br.jhonatastomaz</groupId>
+  <groupId>com.github.jhonatas48</groupId>
   <artifactId>api-mysql</artifactId>
   <version>0.0.2-alpha</version>
+  <packaging>jar</packaging>
   <distributionManagement> 
     <repository>
-        <id>github</id>
-        <name>GitHub Packages</name>
-        <url>https://maven.pkg.github.com/jhonatas48/mysql_api_simples</url>
-    </repository>
+    	<id>clojars</id>
+    	<name>Clojars repository</name>
+    	<url>https://clojars.org/repo</url>
+  	</repository>
 	
   </distributionManagement>
   
@@ -32,6 +33,8 @@
     		<artifactId>log4j</artifactId>
    	 		<version>1.2.17</version>
 		</dependency>
+		
+
   </dependencies>
   
   <properties>
