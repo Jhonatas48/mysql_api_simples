@@ -4,15 +4,14 @@
   <artifactId>api-mysql</artifactId>
   <version>0.0.2.0-alpha</version>
   <packaging>jar</packaging>
+  
   <distributionManagement> 
     <repository>
-    	<id>clojars</id>
-    	<name>Clojars repository</name>
-    	<url>https://clojars.org/repo</url>
-  	</repository>
-	
+        <id>github</id>
+        <name>jhonatas48</name>
+        <url>https://maven.pkg.github.com/jhonatas48/mysql_api_simples</url>
+    </repository>
   </distributionManagement>
-  
   <dependencies>
     <!-- https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc -->
 	<dependency>	
@@ -33,8 +32,6 @@
     		<artifactId>log4j</artifactId>
    	 		<version>1.2.17</version>
 		</dependency>
-		
-
   </dependencies>
   
   <properties>
