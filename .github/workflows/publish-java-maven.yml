@@ -15,5 +15,4 @@ jobs:
       - name: Publish package
         run: mvn --batch-mode deploy
         env:
-           CLOJARS_USERNAME: ${{ secrets.CLOJARS_USERNAME }}
-           CLOJARS_PASSWORD: ${{ secrets.CLOJARS_PASSWORD }}
+           GITHUB_TOKEN: ${{ secrets.JAVA_TOKEN }}
