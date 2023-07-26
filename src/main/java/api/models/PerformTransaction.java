@@ -10,7 +10,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import api.connection.ConnectionManager;
 import api.connection.IConnection;
@@ -29,6 +30,8 @@ import api.models.utils.Checkers;
 	
 	private static boolean debugEnabled = false;
 	private static Exception exception = null;
+	private static final Logger logger = LogManager.getLogger(PerformTransaction.class);
+
 	public PerformTransaction() {
 		
 	}
@@ -41,7 +44,7 @@ import api.models.utils.Checkers;
 	private static void printDebbug(PreparedStatement preparedStament) {
 		
 		if(debugEnabled) {
-			Logger.getLogger("apimysql").info("[DEBUG DB_API] "+preparedStament.toString());
+			logger.info("[DEBUG DB_API] "+preparedStament.toString());
 			System.out.println("[DEBUG DB_API] "+preparedStament.toString());
 			
 		}
@@ -50,7 +53,7 @@ import api.models.utils.Checkers;
 	private static void printDebbug(Statement stament) {
 		
 		if(debugEnabled) {
-			Logger.getLogger("apimysql").info("[DEBUG DB_API] "+stament.toString());
+			logger.info("[DEBUG DB_API] "+stament.toString());
 			
 		}
 	}
@@ -530,7 +533,7 @@ import api.models.utils.Checkers;
 			
 		} catch (SQLException e) {
 			exception = e;
-			Logger.getLogger("apimysql").error("Erro ao inserir um registro na tabela transactions_values");
+			logger.error("Erro ao inserir um registro na tabela transactions_values");
 			e.printStackTrace();
 			return false;
 		} catch (ConnectException e) {
@@ -572,7 +575,7 @@ import api.models.utils.Checkers;
     			
     		} catch (SQLException e) {
     			exception = e;
-    			Logger.getLogger("apimysql").error("Erro ao inserir um registro na tabela lastest_transaction");
+    			logger.error("Erro ao inserir um registro na tabela lastest_transaction");
     			
     			e.printStackTrace();
     

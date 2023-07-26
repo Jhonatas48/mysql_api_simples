@@ -1,5 +1,7 @@
 package api.interfaces;
 
+import java.util.List;
+
 import api.models.statements.Result;
 
 public interface ISelect  extends ISQLParameters<ISelect>{
@@ -9,7 +11,17 @@ public interface ISelect  extends ISQLParameters<ISelect>{
 	 * */
 	public Result queryResult();
 	
+	
+	/*
+	 * Retrieve the List the object T
+	 */
+    public <T> List<T> queryList(Class<T> clazz);
+    
+    public <T> T queryResult(Class<T> clazz);
+    
+	
 	public Result queryResult(boolean useLogTransaction);
+	
 	public Exception getException();
 	/*
 	 * Select the column in the query Result

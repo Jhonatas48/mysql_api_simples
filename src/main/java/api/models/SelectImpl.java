@@ -26,6 +26,7 @@ class SelectImpl extends PerformTransaction implements ISelect {
 		return queryResult(false);
 	}
 
+	
 	@Override
 	public Result queryResult(boolean useLogTransaction)
 	{
@@ -98,4 +99,16 @@ class SelectImpl extends PerformTransaction implements ISelect {
 		return getGetErrorException();
 	}
 
+	@Override
+	public <T> List<T> queryList(Class<T> clazz) {
+		
+		return null;
+	}
+
+	@Override
+	public <T> T queryResult(Class<T> clazz) {
+		
+		return null;
+	}
+    
 }
