@@ -3,4 +3,3 @@ description: A A.P.I se destina a fazer uma integração simples do Mysql e Sqli
 ---
 
 # API Mysql/Sqlite
-[Link Da Documentação](https://mysql-api.gitbook.io/jhonatas48_mysqlapi/)
