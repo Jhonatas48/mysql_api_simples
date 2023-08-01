@@ -21,13 +21,17 @@ O campo nome é obrigatório porque caso o construir lide com múltiplos servido
 
 OBS: É fortemente recomendável também ter um **nome único** para cada Connection Manager
 
+<mark style="color:red;background-color:red;">**Possíveis Erros:**</mark>
+
+* <mark style="color:red;">NullPointerException</mark> : Ocorre quando o nome é vazio ou nulo
+
 ### Métodos Da Classe
 
 #### public void addConnection(IConnection\<?> connection)
 
 Método responsável por registrar a conexão.
 
-<mark style="background-color:red;">**Erros Retornados:**</mark>
+<mark style="color:red;">**Erros Retornados:**</mark>
 
 * <mark style="color:red;">DuplicateConnectionNameException</mark> : Ocorre quando o nome da conexão já existe
 * <mark style="color:red;">Exception</mark> : Ocorre quando qualquer erro aconteçe ao tentar registrar a conexão
@@ -36,7 +40,7 @@ Método responsável por registrar a conexão.
 
 Método responsável de abrir e obter a conexão
 
-<mark style="background-color:red;">**Possíveis Erros:**</mark>
+<mark style="color:red;">**Possíveis Erros:**</mark>
 
 * <mark style="color:red;">NullPointerException</mark> : Ocorre quando não há nenhuma conexão registrada
 * <mark style="color:red;">ConnectionNotEstablishedException</mark> : Ocorre quando não foi possível estabilizar a conexão com o banco de dados por qualquer motivo que seja
