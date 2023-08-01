@@ -5,17 +5,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import api.connection.impl.SqliteConnection;
-import api.exception.ConnectionNotEstablishedException;
-import api.exception.DuplicateConnectionNameException;
-import api.interfaces.ITransaction;
+import api.connection.impl.pools.SqliteConnection;
+import api.exception.connection.ConnectionNotEstablishedException;
+import api.exception.connection.DuplicateConnectionNameException;
+import api.interfaces.actions.ITransaction;
+import api.interfaces.connection.IConnection;
+import api.interfaces.connection.IConnectionManager;
 import api.models.Transaction;
 import api.models.atributes.ForeignKey;
 import api.models.atributes.PrimaryKey;
 import api.models.enums.ConnectionType;
 import api.models.utils.Checkers;
 
-public class ConnectionManager {
+public class ConnectionManager implements IConnectionManager{
 
 	private String name;
 	private boolean firstRun = true;
@@ -170,7 +172,7 @@ public class ConnectionManager {
 
 	public void addConnection(IConnection<?> connection) {
 		
-		
+      Checkers.validadeObjectNotNull(connection,"connection");
       try {
     	  Optional<IConnection<?>>Iconnection = list.stream().filter(
   				connectionObj -> connectionObj.getName().toLowerCase().equalsIgnoreCase(connection.getName())
@@ -183,6 +185,7 @@ public class ConnectionManager {
     	  
     	  if(!e.getMessage().equals("No value present")) {
     		  e.printStackTrace();
+    		  return;
     	  }
     	 
 		 
@@ -192,25 +195,14 @@ public class ConnectionManager {
 
 	}
 
-	public void removeConnection(String connectionTypeName) {
-
+	public void removeConnection(String connectionName) {
+         Checkers.validateStringNotNull(connectionName, "connectionName");
 		if (list.size() == 0) {
 			return;
 		}
 
-		list.forEach(connection -> {
-
-			String connectionType = connection.getConnectionType().toString().toLowerCase();
-			if (connectionType.equals(connectionTypeName.toLowerCase())) {
-
-				if (primaryConnection == connection) {
-					primaryConnection = null;
-					firstRun = true;
-				}
-				list.remove(connection);
-				return;
-			}
-		});
+		list.removeIf(connection -> connection.getName().equals(connectionName.toLowerCase()));
+		
 	}
 
 	public ConnectionType getConnectionType() {

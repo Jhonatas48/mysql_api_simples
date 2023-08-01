@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import api.interfaces.IForeignKey;
-import api.interfaces.IPrimaryKey;
-import api.interfaces.IUnique;
+import api.interfaces.createatrrubutes.IForeignKey;
+import api.interfaces.createatrrubutes.IPrimaryKey;
+import api.interfaces.createatrrubutes.IUnique;
 
 public class Create {
 

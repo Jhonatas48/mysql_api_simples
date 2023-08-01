@@ -1,6 +1,6 @@
 package api.models.atributes;
 
-import api.interfaces.IPrimaryKey;
+import api.interfaces.createatrrubutes.IPrimaryKey;
 import api.models.enums.CreateAtributes;
 
 public class PrimaryKey implements IPrimaryKey{

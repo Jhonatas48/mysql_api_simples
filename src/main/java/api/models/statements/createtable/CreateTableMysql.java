@@ -2,9 +2,9 @@ package api.models.statements.createtable;
 
 import java.util.Map;
 
-import api.connection.impl.SQLBuildManager;
-import api.interfaces.IForeignKey;
-import api.interfaces.IUnique;
+import api.connection.sqlbuilder.SQLBuildManager;
+import api.interfaces.createatrrubutes.IForeignKey;
+import api.interfaces.createatrrubutes.IUnique;
 import api.models.enums.ConnectionType;
 import api.models.enums.TransactionType;
 import api.models.statements.Create;

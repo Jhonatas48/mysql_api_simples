@@ -14,9 +14,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import api.connection.ConnectionManager;
-import api.connection.IConnection;
-import api.connection.impl.SQLBuildManager;
+import api.connection.sqlbuilder.SQLBuildManager;
 import api.exception.ColumnsIsNullException;
+import api.interfaces.connection.IConnection;
 import api.models.enums.TransactionType;
 import api.models.statements.Create;
 import api.models.statements.Delete;

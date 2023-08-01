@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import api.exception.TransactionTypeIsNullException;
+import api.exception.transaction.TransactionTypeIsNullException;
 import api.models.enums.TransactionType;
 
 public class Checkers {

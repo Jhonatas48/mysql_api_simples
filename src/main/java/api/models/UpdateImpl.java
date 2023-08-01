@@ -4,7 +4,7 @@ import java.util.LinkedHashMap;
 
 import api.connection.ConnectionManager;
 import api.interfaces.ICommitAction;
-import api.interfaces.IUpdate;
+import api.interfaces.actions.IUpdate;
 import api.models.enums.TransactionType;
 import api.models.utils.Checkers;
 

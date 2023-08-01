@@ -21,7 +21,8 @@ public class Transformers {
         return columnName.toLowerCase();
     }
 
-    public static <T> T instanceOf(Class<T> clazz, Row row) {
+    @SuppressWarnings("deprecation")
+	public static <T> T instanceOf(Class<T> clazz, Row row) {
         try {
             T bean = clazz.newInstance();
             HashMap<String, Object> columns = row.getColumns();

@@ -1,6 +1,6 @@
 package api.models.statements.delete;
 
-import api.connection.impl.SQLBuildManager;
+import api.connection.sqlbuilder.SQLBuildManager;
 import api.models.enums.ConnectionType;
 import api.models.enums.TransactionType;
 import api.models.statements.Delete;

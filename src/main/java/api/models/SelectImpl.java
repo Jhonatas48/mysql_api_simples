@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import api.connection.ConnectionManager;
-import api.interfaces.ISelect;
+import api.interfaces.actions.ISelect;
 import api.models.statements.Result;
 import api.models.statements.Row;
 import api.models.utils.Checkers;

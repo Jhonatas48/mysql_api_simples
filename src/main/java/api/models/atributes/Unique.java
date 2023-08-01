@@ -3,7 +3,7 @@ package api.models.atributes;
 import java.util.ArrayList;
 import java.util.List;
 
-import api.interfaces.IUnique;
+import api.interfaces.createatrrubutes.IUnique;
 import api.models.enums.CreateAtributes;
 import api.models.utils.Checkers;
 

@@ -1,9 +1,14 @@
 package mysql_api;
 
 import api.connection.ConnectionManager;
-import api.connection.impl.MysqlConnection;
-import api.connection.impl.SqliteConnection;
+import api.connection.impl.pools.MysqlConnection;
+import api.connection.impl.pools.SqliteConnection;
 import api.interfaces.*;
+import api.interfaces.actions.ICreate;
+import api.interfaces.actions.IDelete;
+import api.interfaces.actions.IInsert;
+import api.interfaces.actions.ISelect;
+import api.interfaces.actions.IUpdate;
 import api.models.Transaction;
 public class SqlBuilder {
 	

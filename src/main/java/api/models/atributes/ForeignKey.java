@@ -1,6 +1,6 @@
 package api.models.atributes;
 
-import api.interfaces.IForeignKey;
+import api.interfaces.createatrrubutes.IForeignKey;
 import api.models.enums.CreateAtributes;
 
 public class ForeignKey implements IForeignKey{

@@ -1,11 +1,11 @@
 package api.models;
 
-import api.interfaces.ICreate;
-import api.interfaces.IDelete;
-import api.interfaces.IInsert;
-import api.interfaces.ISelect;
-import api.interfaces.ITransaction;
-import api.interfaces.IUpdate;
+import api.interfaces.actions.ICreate;
+import api.interfaces.actions.IDelete;
+import api.interfaces.actions.IInsert;
+import api.interfaces.actions.ISelect;
+import api.interfaces.actions.ITransaction;
+import api.interfaces.actions.IUpdate;
 
 public class Transaction implements ITransaction {
 

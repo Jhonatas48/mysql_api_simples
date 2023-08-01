@@ -1,7 +1,7 @@
 package mysql_api;
 
 import api.connection.ConnectionManager;
-import api.connection.impl.SqliteConnection;
+import api.connection.impl.pools.SqliteConnection;
 import api.models.Transaction;
 import api.models.atributes.PrimaryKey;
 import api.models.statements.Result;

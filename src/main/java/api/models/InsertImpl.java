@@ -4,8 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.function.Consumer;
 
 import api.connection.ConnectionManager;
-import api.connection.IConnection;
-import api.interfaces.IInsert;
+import api.interfaces.actions.IInsert;
 import api.models.enums.TransactionType;
 import api.models.utils.Checkers;
 
@@ -48,6 +47,7 @@ class InsertImpl implements IInsert{
 	}
 	@Override
 	public IInsert setConnectionManager(ConnectionManager connection) {
+		Checkers.validadeObjectNotNull(connectionManager, "connectionManager");
 		this.connectionManager = connection;
 		return this;
 	}

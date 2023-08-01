@@ -1,9 +1,8 @@
 package api.models;
 
 import api.connection.ConnectionManager;
-import api.connection.IConnection;
 import api.interfaces.ICommitAction;
-import api.interfaces.IDelete;
+import api.interfaces.actions.IDelete;
 import api.models.enums.TransactionType;
 
 class DeleteImpl implements IDelete {
