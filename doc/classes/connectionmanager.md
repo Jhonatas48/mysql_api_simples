@@ -96,9 +96,9 @@ Remove um IConnection baseado no nome da conexão
 
 </details>
 
-#### public ConnectionType getConnectionType()
+#### public [ConnectionType](../enums/connectiontype.md) getConnectionType()
 
-Retorna o ConnectionType correspondente da conexão. Ou seja, retorna o tipo da conexão
+Retorna o [ConnectionType](../enums/connectiontype.md) correspondente da conexão. Ou seja, retorna o tipo da conexão
 
 #### public Connection getLogConnecton()
 
