@@ -21,9 +21,13 @@ O campo nome é obrigatório porque caso o construir lide com múltiplos servido
 
 OBS: É fortemente recomendável também ter um **nome único** para cada Connection Manager
 
-<mark style="color:red;background-color:red;">**Possíveis Erros:**</mark>
+<details>
+
+<summary><mark style="color:red;"><strong>Possíveis Erros:</strong></mark></summary>
 
 * <mark style="color:red;">NullPointerException</mark> : Ocorre quando o nome é vazio ou nulo
+
+</details>
 
 ### Métodos Da Classe
 
