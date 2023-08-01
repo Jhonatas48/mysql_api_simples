@@ -7,7 +7,7 @@ description: >-
 
 # ConnectionManager
 
-Para melhor entendimento segue uma ilustração:
+rPara melhor entendimento segue uma ilustração:
 
 <figure><img src="../../.gitbook/assets/Untitled.png" alt=""><figcaption></figcaption></figure>
 
@@ -23,7 +23,7 @@ OBS: É fortemente recomendável também ter um **nome único** para cada Connec
 
 <details>
 
-<summary><mark style="color:red;"><strong>Possíveis Erros:</strong></mark></summary>
+<summary><mark style="color:red;"><strong>Erros:</strong></mark></summary>
 
 * <mark style="color:red;">NullPointerException</mark> : Ocorre quando o nome é vazio ou nulo
 
@@ -37,23 +37,87 @@ Método responsável por registrar a conexão.
 
 <details>
 
-<summary><mark style="color:red;"><strong>Possíveis Erros:</strong></mark></summary>
+<summary><mark style="color:red;"><strong>Erros</strong></mark></summary>
 
 * <mark style="color:red;">DuplicateConnectionNameException</mark> : Ocorre quando o nome da conexão já existe
 * <mark style="color:red;">Exception</mark> : Ocorre quando qualquer erro que aconteça ao tentar ao registrar a conexão
 
 </details>
 
-#### getConnection()
+#### public Connection getConnection()
 
 Método responsável de abrir e obter a conexão
 
 <details>
 
-<summary><mark style="color:red;"><strong>Possíveis Erros:</strong></mark></summary>
+<summary><mark style="color:red;"><strong>Erros</strong></mark></summary>
 
 * <mark style="color:red;">NullPointerException</mark> : Ocorre quando não há nenhuma conexão registrada
 * <mark style="color:red;">ConnectionNotEstablishedException</mark> : Ocorre quando não foi possível estabilizar a conexão com o banco de dados por qualquer motivo que seja
+* <mark style="color:red;">SQLException</mark>: Ocorre quando há alguma inconsistência no código SQL
+* <mark style="color:red;">ClassNotFoundException</mark>: Ocorre quando a classe do driver do banco de dados não for encontrada
 
 </details>
 
+#### public IConnection\<?> getConnectionByName(String name)
+
+Retorna uma conexão conforme o nome da conexão
+
+<details>
+
+<summary><mark style="color:red;"><strong>Erros</strong></mark></summary>
+
+* [<mark style="color:red;">NullPointerException</mark>](#user-content-fn-1)[^1] : Ocorre quando não há nenhuma conexão registrada ou quando o nome está vazio
+* <mark style="color:red;">Exception</mark>: Ocorre quando é disparado algum erro na função que busca a conexão
+
+</details>
+
+#### public void closeConnection()
+
+Realiza o fechamento da conexão que foi aberta para interagir com o banco de dados
+
+<details>
+
+<summary><mark style="color:red;"><strong>Erros</strong></mark></summary>
+
+* <mark style="color:red;">SQLException</mark> : Ocorre quando  houver algum problema durante o fechamento da conexão com o banco de dados
+
+</details>
+
+#### public void removeConnection(String connectionName)
+
+Remove um IConnection baseado no nome da conexão
+
+<details>
+
+<summary><mark style="color:red;"><strong>Erros</strong></mark></summary>
+
+[<mark style="color:red;">NullPointerException</mark>](#user-content-fn-2)[^2] : Ocorre quando não for passado o nome da conexão
+
+</details>
+
+#### public ConnectionType getConnectionType()
+
+Retorna o ConnectionType correspondente da conexão. Ou seja, retorna o tipo da conexão
+
+#### public Connection getLogConnecton()
+
+Retorna a conexão do banco de dados de log
+
+<details>
+
+<summary><mark style="color:red;"><strong>Erros</strong></mark></summary>
+
+* <mark style="color:red;">ConnectionNotEstablishedException</mark>: Ocorre quando não foi possível fazer a conexão com o banco de dados de Logs
+* <mark style="color:red;">SQLException</mark>: Ocorre quando há alguma inconsistência no código SQL
+* <mark style="color:red;">ClassNotFoundException</mark>: Ocorre quando a classe do driver do banco de dados não for encontrada
+
+</details>
+
+#### public String getName()
+
+Retorna o nome do ConnectionManager
+
+[^1]: 
+
+[^2]: 
