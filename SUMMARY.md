@@ -3,7 +3,7 @@
 * [API Mysql/Sqlite](README.md)
   * [Classes](doc/classes/README.md)
     * [ConnectionManager](doc/classes/connectionmanager.md)
-    * [Connectores](doc/classes/connectores/README.md)
+    * [Connectores](doc/classes/connectores.md)
       * [MysqlConnection](doc/classes/connectores/mysqlconnection.md)
       * [SqliteConnection](doc/classes/connectores/sqliteconnection.md)
   * [Enums](doc/enums.md)

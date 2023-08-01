@@ -7,7 +7,7 @@ description: >-
 
 # ConnectionManager
 
-rPara melhor entendimento segue uma ilustração:
+Para melhor entendimento segue uma ilustração:
 
 <figure><img src="../../.gitbook/assets/Untitled.png" alt=""><figcaption></figcaption></figure>
 
