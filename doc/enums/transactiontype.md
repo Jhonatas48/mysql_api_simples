@@ -4,7 +4,7 @@ description: Representa o tipo de Transação que será executada no banco de da
 
 # TransactionType
 
-Transações Disponíveis
+### Transações Disponíveis
 
 * CREATE
 * INSERT
