@@ -29,7 +29,7 @@ Método responsável por registrar a conexão.
 
 <mark style="background-color:red;">**Erros Retornados:**</mark>
 
-* <mark style="color:red;">DuplicateConnectionNameException</mark> : Retornado quando o nome da conexão já existe
+* <mark style="color:red;">DuplicateConnectionNameException</mark> : Ocorre quando o nome da conexão já existe
 * <mark style="color:red;">Exception</mark> : Ocorre quando qualquer erro aconteçe ao tentar registrar a conexão
 
 #### getConnection()
