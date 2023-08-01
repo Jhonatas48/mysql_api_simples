@@ -1,8 +1,8 @@
 ---
 description: >-
-  O ConnectionManager é  a classe responsável por realizar a conexão com o banco
-  de dados, e em caso que umas das Conexões cai, o sistema de FailBack irá
-  colocar a próxima conexão disponível
+  O ConnectionManager é a classe responsável por realizar a conexão com o banco
+  de dados, e em caso de queda de uma conexão, o sistema de FailBack irá colocar
+  a próxima conexão disponível
 ---
 
 # ConnectionManager
