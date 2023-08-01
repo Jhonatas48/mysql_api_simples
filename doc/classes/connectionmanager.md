@@ -11,7 +11,7 @@ Para melhor entendimento segue uma ilustração:
 
 <figure><img src="../../.gitbook/assets/Untitled.png" alt=""><figcaption></figcaption></figure>
 
-Como pode ver acima o Connection Manager é capaz de gerenciar diversar conexões e caso a conexão principal caia ele já aciona outra automáticamente
+Como pode ver acima o Connection Manager é capaz de gerenciar diversas conexões e caso a conexão principal caia ele já aciona outra automáticamente o que é chamado de FailBack
 
 ### Construtor
 
