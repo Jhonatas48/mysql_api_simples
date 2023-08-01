@@ -3,3 +3,4 @@
 * [API Mysql/Sqlite](README.md)
   * [Classes](doc/classes/README.md)
     * [ConnectionManager](doc/classes/connectionmanager.md)
+  * [Enums](doc/enums.md)
