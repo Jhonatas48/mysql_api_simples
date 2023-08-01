@@ -27,12 +27,17 @@ OBS: É fortemente recomendável também ter um **nome único** para cada Connec
 
 Método responsável por registrar a conexão.
 
-<mark style="background-color:red;">**Erros Retornados**</mark>**:**
+<mark style="background-color:red;">**Erros Retornados:**</mark>
 
-* DuplicateConnectionNameException : Retornado quando o nome da conexão já existe
-* Exception : Ocorre quando qualquer erro aconteçe ao tentar registrar a conexão
+* <mark style="color:red;">DuplicateConnectionNameException</mark> : Retornado quando o nome da conexão já existe
+* <mark style="color:red;">Exception</mark> : Ocorre quando qualquer erro aconteçe ao tentar registrar a conexão
 
 #### getConnection()
 
 Método responsável de abrir e obter a conexão
+
+<mark style="background-color:red;">**Possíveis Erros:**</mark>
+
+* <mark style="color:red;">NullPointerException</mark> : Ocorre quando não há nenhuma conexão registrada
+* <mark style="color:red;">ConnectionNotEstablishedException</mark> : Ocorre quando não foi possível estabilizar a conexão com o banco de dados por qualquer motivo que seja
 
