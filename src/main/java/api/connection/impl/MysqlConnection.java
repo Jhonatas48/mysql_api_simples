@@ -11,6 +11,11 @@ import api.models.utils.Checkers;
 
 public class MysqlConnection extends TCPConnectionAtributes implements IConnection<TCPConnectionAtributes>{
 
+	private String name;
+	public MysqlConnection(String name) {
+		Checkers.validateStringNotNull(name, "name");
+		this.name = name;
+	}
 	private void initializeVariables() {
 		
 		if(Checkers.isEmpty(getAdress())) {
@@ -87,7 +92,7 @@ public class MysqlConnection extends TCPConnectionAtributes implements IConnecti
 		return this;
 	}
 	@Override
-	public ConnectionType geConnectionType() {
+	public ConnectionType getConnectionType() {
 	
 		return ConnectionType.MYSQL;
 	}
@@ -95,6 +100,13 @@ public class MysqlConnection extends TCPConnectionAtributes implements IConnecti
 	public void syncronize() {
 		
 		
+	}
+	@Override
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

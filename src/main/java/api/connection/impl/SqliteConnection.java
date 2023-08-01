@@ -11,8 +11,11 @@ import api.models.utils.Checkers;
 
 public class SqliteConnection extends ConnectionAtributesFiles implements IConnection<ConnectionAtributesFiles>{
 	
-	public SqliteConnection(String nameFile) {
+	private String name;
+	public SqliteConnection(String nameConnection , String nameFile) {
+		Checkers.validateStringNotNull(nameConnection, "nameConnection");
 		Checkers.validateStringNotNull(nameFile, "nameFile");
+		this.name = nameConnection;
 		String[] nameWiExtension = nameFile.split("\\.");
 		
 		if(nameWiExtension.length < 2) {
@@ -78,7 +81,7 @@ public class SqliteConnection extends ConnectionAtributesFiles implements IConne
 	}
 
 	@Override
-	public ConnectionType geConnectionType() {
+	public ConnectionType getConnectionType() {
 		
 		return ConnectionType.SQLITE;
 	}
@@ -87,6 +90,15 @@ public class SqliteConnection extends ConnectionAtributesFiles implements IConne
 	public void syncronize() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	@Override
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

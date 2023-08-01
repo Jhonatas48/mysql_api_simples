@@ -5,15 +5,19 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
+import api.connection.ConnectionManager;
 import api.interfaces.ISelect;
 import api.models.statements.Result;
+import api.models.statements.Row;
 import api.models.utils.Checkers;
+import api.models.utils.Transformers;
 
 class SelectImpl extends PerformTransaction implements ISelect {
 	private String table;
 	private String filter;
 	private List<String>columns = new ArrayList<>();
 	private boolean useTableLog;
+	private ConnectionManager connection=null;
 	private LinkedHashMap<String,String>tableInnerJoin=new LinkedHashMap<>();
 	
 	@Override
@@ -29,8 +33,9 @@ class SelectImpl extends PerformTransaction implements ISelect {
 	
 	@Override
 	public Result queryResult(boolean useLogTransaction)
-	{
-		
+	{   
+
+		setConnectionManagers(connection);
 		String columnsSelect = "";
 		int count=0;
 		for(String column:columns) {
@@ -58,6 +63,7 @@ class SelectImpl extends PerformTransaction implements ISelect {
 		for(Entry<String,String>innerjoin:tableInnerJoin.entrySet()) {
 			innerJoins = " inner join "+innerjoin.getKey()+" on "+innerjoin.getValue();
 		}
+		
 		return rowSelect(table+innerJoins, columnsSelect,filter,useLogTransaction);
 	}
 
@@ -101,14 +107,56 @@ class SelectImpl extends PerformTransaction implements ISelect {
 
 	@Override
 	public <T> List<T> queryList(Class<T> clazz) {
-		
-		return null;
+	    Result result = queryResult(false);
+
+	    if (!Checkers.isObjectNotNull(result) || Checkers.isListEmpty(result.getRows())) {
+	        return null;
+	    }
+
+	    List<T> resultList = new ArrayList<>();
+	    for (Row row : result.getRows()) {
+	        try {
+	            T instance = Transformers.instanceOf(clazz, row);
+	            resultList.add(instance);
+	        } catch (Exception e) {
+	            // Lida com qualquer exceção ocorrida durante a conversão
+	            e.printStackTrace();
+	        }
+	    }
+
+	    return resultList;
 	}
 
 	@Override
 	public <T> T queryResult(Class<T> clazz) {
+		 Result result = queryResult(false);
+
+		    if (Checkers.isObjectNotNull(result) || Checkers.isListEmpty(result.getRows())) {
+		        return null;
+		    }
+		    
+		    try {
+	            T instance = Transformers.instanceOf(clazz,result.getRows().get(0));
+	           return instance;
+	        } catch (Exception e) {
+	            // Lida com qualquer exceção ocorrida durante a conversão
+	            e.printStackTrace();
+
+	    		return null;
+	        }
+
+	}
+	
+	@Override
+	public ISelect setConnectionManager(ConnectionManager connectionManager) {
+		this.connection=connectionManager;
 		
-		return null;
+		return this;
+		
+	}
+
+	public ConnectionManager getConnectionManager() {
+		return connection;
 	}
     
 }

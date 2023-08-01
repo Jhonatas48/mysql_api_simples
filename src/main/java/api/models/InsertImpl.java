@@ -3,13 +3,17 @@ package api.models;
 import java.util.LinkedHashMap;
 import java.util.function.Consumer;
 
+import api.connection.ConnectionManager;
+import api.connection.IConnection;
 import api.interfaces.IInsert;
 import api.models.enums.TransactionType;
+import api.models.utils.Checkers;
 
 class InsertImpl implements IInsert{
 
 	private String table;
 	private LinkedHashMap<String,String>columns = new LinkedHashMap<>();
+	private ConnectionManager connectionManager;
 	@Override
 	public IInsert setTable(String table) {
 		this.table=table;
@@ -33,6 +37,8 @@ class InsertImpl implements IInsert{
 		    commitAction.setTable(table);
 		    commitAction.setType(TransactionType.INSERT);
 		    commitAction.setColumns(columns);
+		    commitAction.setConnectionManager(connectionManager);
+		    
 		   boolean result=  commitAction.commit();
 		   if(failure !=null) {
 			   failure.accept(commitAction.getGetErrorException());
@@ -40,6 +46,12 @@ class InsertImpl implements IInsert{
 		   
 		return result;
 	}
+	@Override
+	public IInsert setConnectionManager(ConnectionManager connection) {
+		this.connectionManager = connection;
+		return this;
+	}
+	
 	
 	
 

@@ -31,6 +31,8 @@ public abstract class ConnectionAtributesFiles implements IConnectionAtributeFil
 				e.printStackTrace();
 			}
 		}
+		//System.out.println("PAth: "+file.getAbsolutePath());
+	
 	}
 	
 	

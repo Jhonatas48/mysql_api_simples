@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.function.Consumer;
 
+import api.connection.ConnectionManager;
 import api.connection.IConnection;
 import api.exception.ColumnsIsNullException;
 import api.exception.DuplicatePrimaryKeyException;
@@ -24,6 +25,7 @@ class CreateImpl implements ICreate{
 	private String table;
 	private LinkedHashMap<String,String>columns = new LinkedHashMap<String,String>();
 	private IConnection<?> connection=null;
+	private ConnectionManager connectionManager = null;
 	private IPrimaryKey primaryKey;
 	private boolean autoIncrement= false;
 	private List<IForeignKey>foreignKeys = new ArrayList<>();
@@ -64,10 +66,13 @@ class CreateImpl implements ICreate{
 		commitAction.setPrimaryKey(this.primaryKey);
 		commitAction.setForeignKeys(foreignKeys);
 		commitAction.setUniqueKeys(this.uniqueKeys);
+		commitAction.setConnectionManager(this.connectionManager);
 		boolean result = commitAction.commit();
+		
 		if(failure != null && commitAction.getGetErrorException() != null) {
 		  failure.accept(commitAction.getGetErrorException());	
 		}
+		
 		return result;
 		
 	}
@@ -83,6 +88,14 @@ class CreateImpl implements ICreate{
 		return this;
 		
 	}
+	
+	@Override
+	public ICreate setConnectionManager(ConnectionManager connectionManager) {
+		Checkers.validadeObjectNotNull(connectionManager, "connectionManager");
+		this.connectionManager = connectionManager;
+		return this;
+	}
+
 
 	@Override
 	public ICreate addColumn(String column, String value, ICreateAtributes<?> createAtribute) {
@@ -205,7 +218,6 @@ class CreateImpl implements ICreate{
 	public IConnection<?> getConnection() {
 		return connection;
 	}
-
 
 
 }

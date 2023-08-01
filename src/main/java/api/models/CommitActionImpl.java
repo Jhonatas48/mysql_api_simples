@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
 
+import api.connection.ConnectionManager;
 import api.connection.IConnection;
 import api.connection.impl.SQLBuildManager;
 import api.exception.ColumnsIsNullException;
@@ -34,7 +35,7 @@ class CommitActionImpl extends PerformTransaction implements ICommitAction {
 	private boolean autoIncrement= false;
 	private List<IForeignKey>foreignKeys = new ArrayList<>();
 	private List<IUnique>uniqueKeys = new ArrayList<>();
-
+    private ConnectionManager manager;
 	/**
 	 * @return the uniqueKeys
 	 */
@@ -53,6 +54,13 @@ class CommitActionImpl extends PerformTransaction implements ICommitAction {
 	public boolean commit(Consumer<? super Throwable> failure) {
 		
 		Checkers.validateStringNotNull(table, "table");
+	
+		if ( !(type == TransactionType.CREATE_TABLE)) {
+			Checkers.validadeObjectNotNull(manager,"ConnectionManager");
+		}
+	//	Checkers.validadeObjectNotNull(manager,"ConnectionManager");
+		setConnectionManagers(manager);
+		
 		if(type==TransactionType.SELECT) {
 			throw new TransactionInvalidException();
 		}
@@ -80,7 +88,7 @@ class CommitActionImpl extends PerformTransaction implements ICommitAction {
 			});
 			
 			if(connection != null) {
-				return createTable(SQLBuildManager.buildSQL(connection.geConnectionType(),TransactionType.CREATE_TABLE, create), connection);
+				return createTable(SQLBuildManager.buildSQL(connection.getConnectionType(),TransactionType.CREATE_TABLE, create), connection);
 			}
 			result= createTable(create);
 			break;
@@ -262,7 +270,11 @@ class CommitActionImpl extends PerformTransaction implements ICommitAction {
 		return getGetErrorException();
 	}
 
+	public void setConnectionManager(ConnectionManager manager) {
+		this.manager = manager;
+	}
 
+   
 	
 
 }

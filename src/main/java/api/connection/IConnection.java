@@ -15,7 +15,9 @@ public interface IConnection<T extends IConnectionAtributes> {
 
 	public void closeResultSet(ResultSet resultSet);
 
-	public ConnectionType geConnectionType();
+	public ConnectionType getConnectionType();
 	
 	public void syncronize();
+	
+	public String getName();
 }

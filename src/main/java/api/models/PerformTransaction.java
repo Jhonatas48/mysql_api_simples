@@ -31,6 +31,11 @@ import api.models.utils.Checkers;
 	private static boolean debugEnabled = false;
 	private static Exception exception = null;
 	private static final Logger logger = LogManager.getLogger(PerformTransaction.class);
+    private ConnectionManager connectionManager = null;
+	public void setConnectionManagers(ConnectionManager connectionManager) {
+	
+		this.connectionManager = connectionManager;
+	}
 
 	public PerformTransaction() {
 		
@@ -59,6 +64,7 @@ import api.models.utils.Checkers;
 	}
 	
 	public boolean createTable(String sql,IConnection<?> Iconnection) {
+		
 		Connection connection = Iconnection.openConnection();
 		
 		try {
@@ -78,8 +84,8 @@ import api.models.utils.Checkers;
 	
 	}
 	public boolean createTable(Create create) {
-		
-		Connection conection = ConnectionManager.getConnection();
+		Checkers.validadeObjectNotNull(connectionManager, "connectionManager");
+		Connection conection = connectionManager.getConnection();
 		try {
 			if(!Checkers.isObjectNotNull(create.getPrimaryKey())) {
 				throw new ColumnsIsNullException("The Primakey Key is not defined");
@@ -89,7 +95,7 @@ import api.models.utils.Checkers;
 				
 			}
 			//System.out.println("SQL: "+SQLBuildManager.buildSQL(ConnectionManager.getConnectionType(),TransactionType.CREATE_TABLE, create));
-			PreparedStatement preparedStament = conection.prepareStatement(SQLBuildManager.buildSQL(ConnectionManager.getConnectionType(),TransactionType.CREATE_TABLE, create));
+			PreparedStatement preparedStament = conection.prepareStatement(SQLBuildManager.buildSQL(connectionManager.getConnectionType(),TransactionType.CREATE_TABLE, create));
 			printDebbug(preparedStament);
 			preparedStament.execute();
 			 conection.close();
@@ -103,7 +109,8 @@ import api.models.utils.Checkers;
 	}
 	
 	public boolean tableInsert(String table, String columns, String... data) {
-		Connection conection = ConnectionManager.getConnection();
+		Checkers.validadeObjectNotNull(connectionManager, "connectionManager");
+		Connection conection = connectionManager.getConnection();
         String sqldata = "";
         int i = 0;
         for (String d : data) {
@@ -137,11 +144,12 @@ import api.models.utils.Checkers;
         }
         return false;
     }
-	
+
     public boolean tableInsert(Insert... builders) {
-        String sql = "";
+    	Checkers.validadeObjectNotNull(connectionManager, "connectionManager");
+    	String sql = "";
         
-        Connection conection = ConnectionManager.getConnection();
+        Connection conection = connectionManager.getConnection();
         
         if(builders == null) {
         	
@@ -154,14 +162,14 @@ import api.models.utils.Checkers;
         }
         if(builders.length == 1) {
         	
-             sql= SQLBuildManager.buildSQL(ConnectionManager.getConnectionType(),TransactionType.INSERT, builders[0]);
+             sql= SQLBuildManager.buildSQL(connectionManager.getConnectionType(),TransactionType.INSERT, builders[0]);
             // System.out.println("INSET: "+sql);
             // sql=sql.replace("?",builders[0].getTable().toLowerCase());
         }else{
         	
         	 for(Insert insert: builders) {
              	
-             	sql= SQLBuildManager.buildSQL(ConnectionManager.getConnectionType(),TransactionType.INSERT, insert);
+             	sql= SQLBuildManager.buildSQL(connectionManager.getConnectionType(),TransactionType.INSERT, insert);
              	sql=sql+";";
              }
         }
@@ -180,6 +188,7 @@ import api.models.utils.Checkers;
        //System.out.println("sql: "+sql);
       //  = null;
         try {
+        	 
         	 PreparedStatement  stmt = conection.prepareStatement(sql);
         	 int counter = 1;
         	 
@@ -255,10 +264,10 @@ import api.models.utils.Checkers;
         return false;
     }*/
     public boolean rowUpdate(Update... builders) {
-    		
+    	Checkers.validadeObjectNotNull(connectionManager, "connectionManager");	
     	String sql ="";
         
-        Connection conection = ConnectionManager.getConnection();
+        Connection conection = connectionManager.getConnection();
         
         if(builders == null) {
         	
@@ -272,13 +281,13 @@ import api.models.utils.Checkers;
         }
         if(builders.length == 1) {
         	
-             sql= SQLBuildManager.buildSQL(ConnectionManager.getConnectionType(),TransactionType.UPDATE, builders[0]);
+             sql= SQLBuildManager.buildSQL(connectionManager.getConnectionType(),TransactionType.UPDATE, builders[0]);
         
         }else{
         	
         	 for(Update update: builders) {
         		 
-             	sql=sql+SQLBuildManager.buildSQL(ConnectionManager.getConnectionType(),TransactionType.UPDATE, update)+";";
+             	sql=sql+SQLBuildManager.buildSQL(connectionManager.getConnectionType(),TransactionType.UPDATE, update)+";";
              
              }
         }
@@ -319,10 +328,10 @@ import api.models.utils.Checkers;
     }
     
     public boolean rowDelete(Delete... builders) {
-		
+    	Checkers.validadeObjectNotNull(connectionManager, "connectionManager");
     	String sql ="";
         
-        Connection conection = ConnectionManager.getConnection();
+        Connection conection = connectionManager.getConnection();
         
         if(builders == null) {
         	
@@ -336,13 +345,13 @@ import api.models.utils.Checkers;
         }
         if(builders.length == 1) {
         	
-             sql= SQLBuildManager.buildSQL(ConnectionManager.getConnectionType(),TransactionType.DELETE, builders[0]);
+             sql= SQLBuildManager.buildSQL(connectionManager.getConnectionType(),TransactionType.DELETE, builders[0]);
         
         }else{
         
         	 for(Delete delete: builders) {
         			
-             	sql=sql+SQLBuildManager.buildSQL(ConnectionManager.getConnectionType(),TransactionType.DELETE, delete)+";";
+             	sql=sql+SQLBuildManager.buildSQL(connectionManager.getConnectionType(),TransactionType.DELETE, delete)+";";
              
              }
         }
@@ -372,13 +381,17 @@ import api.models.utils.Checkers;
     }
     
     public Result rowSelect(String table, String columns, String filter,boolean uselogTransaction) {
+    	
+    	Checkers.validadeObjectNotNull(connectionManager, "connectionManager");
     	if(uselogTransaction) {
-    		return this.rowSelect(ConnectionManager.getLogConnecton(), table, columns, filter);
+    		return this.rowSelect(connectionManager.getLogConnecton(), table, columns, filter);
     	}
-    	return this.rowSelect(ConnectionManager.getConnection(), table, columns, filter);
+    	
+    	return this.rowSelect(connectionManager.getConnection(), table, columns, filter);
     }
     private Result rowSelect(Connection connection,String table, String columns, String filter) {
-    	
+    	Checkers.validadeObjectNotNull(connectionManager, "connectionManager");
+    	Checkers.validateStringNotNull(table, "table");
     	if(columns == null || columns.equals("")) {
             columns = "*";
         }
@@ -428,11 +441,12 @@ import api.models.utils.Checkers;
         }
     }
     public Result rowSelect(String table, String columns, String filter) {
-    	return this.rowSelect(ConnectionManager.getConnection(), table, columns, filter);
+    	Checkers.validadeObjectNotNull(connectionManager, "connectionManager");
+    	return this.rowSelect(connectionManager.getConnection(), table, columns, filter);
     }
    
-    private static boolean registerTransactionLog(final String sql, final List<Object>list,final TransactionType transactionType) {
-    	
+    private boolean registerTransactionLog(final String sql, final List<Object>list,final TransactionType transactionType) {
+    	Checkers.validadeObjectNotNull(connectionManager, "connectionManager");
     	Checkers.isNotEmpty(sql);
     	Checkers.validadeObjectNotNull(transactionType,"TransactionType");
     	
@@ -442,7 +456,7 @@ import api.models.utils.Checkers;
         	
     	}
     	
-    	Connection connection = ConnectionManager.getLogConnecton();
+    	Connection connection = connectionManager.getLogConnecton();
     	try {
     		
     		long time=System.currentTimeMillis();
@@ -500,9 +514,9 @@ import api.models.utils.Checkers;
     	
     }
   
-    private static boolean insertTransactionLog(final Object object, final int transactionId,final long time,final int parameterOrder) {
-    	
-    	Connection connection  =  ConnectionManager.getLogConnecton();
+    private boolean insertTransactionLog(final Object object, final int transactionId,final long time,final int parameterOrder) {
+    	Checkers.validadeObjectNotNull(connectionManager, "connectionManager");
+    	Connection connection  =  connectionManager.getLogConnecton();
     	PreparedStatement preparedStatement;
 		try {
 			preparedStatement = connection.prepareStatement("INSERT INTO transactions_values(transactionId,parameterOrder,field)values(?,?,?)");
@@ -549,16 +563,16 @@ import api.models.utils.Checkers;
     	return true;
     }
     
-    private static boolean insertTransactionLatestLog(long time,final int transactionId) {
-    	
+    private boolean insertTransactionLatestLog(long time,final int transactionId) {
+    	Checkers.validadeObjectNotNull(connectionManager, "connectionManager");
     	try {
-    		Connection connection  =  ConnectionManager.getLogConnecton();
+    		Connection connection  =  connectionManager.getLogConnecton();
         	PreparedStatement preparedStatement;
         	
     		preparedStatement = null;
     		connection= null;
     		
-    		connection  =  ConnectionManager.getLogConnecton();
+    		connection  =  connectionManager.getLogConnecton();
     		
     		
     			preparedStatement = connection.prepareStatement("INSERT INTO lastest_transaction(transactionId,milliseconds)VALUES(?,?)");
@@ -637,8 +651,8 @@ import api.models.utils.Checkers;
     }
     */
     public boolean custom(String sql) {
-    	
-    	Connection conection = ConnectionManager.getConnection();
+    	Checkers.validadeObjectNotNull(connectionManager, "connectionManager");
+    	Connection conection = connectionManager.getConnection();
         Statement stmt = null;
         try {
             stmt = conection.createStatement();

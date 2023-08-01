@@ -3,29 +3,40 @@ package api.connection;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import api.connection.impl.SqliteConnection;
 import api.exception.ConnectionNotEstablishedException;
+import api.exception.DuplicateConnectionNameException;
 import api.interfaces.ITransaction;
 import api.models.Transaction;
 import api.models.atributes.ForeignKey;
 import api.models.atributes.PrimaryKey;
 import api.models.enums.ConnectionType;
+import api.models.utils.Checkers;
 
 public class ConnectionManager {
 
-	private static boolean firstRun = true;
+	private String name;
+	private boolean firstRun = true;
 
-	private static IConnection<?> primaryConnection = null;
+	private IConnection<?> primaryConnection = null;
 
-	private static IConnection<?> logConnection = null;
+	private IConnection<?> logConnection = null;
 
-	private static ConnectionType connectionType;
+	private ConnectionType connectionType;
 
-	private static List<IConnection<?>> list = new ArrayList<>();
-	private static List<IConnection<?>> listException = new ArrayList<>();
+	private List<IConnection<?>> list = new ArrayList<>();
+	private List<IConnection<?>> listException = new ArrayList<>();
+	
+	
 
-	private static Connection testConnection() throws ConnectionNotEstablishedException {
+	public ConnectionManager(String name) {
+	    Checkers.validateStringNotNull(name,"name");
+		this.name = name;
+	}
+
+	private Connection testConnection() throws ConnectionNotEstablishedException {
 
 		if (list.size() == 0) {
 
@@ -39,7 +50,7 @@ public class ConnectionManager {
 			if (connection != null) {
 
 				primaryConnection = iConnection;
-				connectionType = primaryConnection.geConnectionType();
+				connectionType = primaryConnection.getConnectionType();
 				firstRun = false;
 				break;
 
@@ -47,7 +58,7 @@ public class ConnectionManager {
 			if (listException.contains(iConnection)) {
 				continue;
 			}
-			System.out.println("[API-MSQL]Connection " + iConnection.geConnectionType() + " not estabilized");
+			System.out.println("[API-MSQL]Connection " + iConnection.getConnectionType() + " not estabilized");
 			System.out.println("Try next connection");
 			listException.add(iConnection);
 
@@ -62,13 +73,13 @@ public class ConnectionManager {
 			return connection;
 		}
 
-		logConnection = new SqliteConnection("log");
+		logConnection = new SqliteConnection("log",name+"_log");
 		createTablesLogs();
 		return connection;
 
 	}
 
-	private static void createTablesLogs() {
+	private void createTablesLogs() {
 
 		ITransaction transaction = new Transaction();
 		transaction.create().setTable("transactions").setConnection(logConnection)
@@ -100,10 +111,11 @@ public class ConnectionManager {
 		// \"id\" INTEGER,\"transactionId\" INTEGER,\"milliseconds\" REAL,PRIMARY
 		// KEY(\"id\" AUTOINCREMENT),FOREIGN KEY(\"transactionId\") REFERENCES
 		// \"transactions\"(\"id\"))",logConnection);
+	
 
 	}
 
-	public static Connection getConnection() {
+	public Connection getConnection() {
 
 		if (primaryConnection != null) {
 
@@ -125,6 +137,30 @@ public class ConnectionManager {
 		return primaryConnection.openConnection();
 	}
 
+	
+	public IConnection<?> getConnectionByName(String name) {
+		Checkers.validateStringNotNull(name, "name");
+		if (list.size() == 0) {
+
+			throw new NullPointerException("Not exists database connections register");
+		}
+		try {
+		
+			Optional<IConnection<?>>Iconnection = list.stream().filter(
+					connectionObj -> connectionObj.getName().toLowerCase().equalsIgnoreCase(name)
+					).findFirst();
+			return Iconnection.get();
+		
+		}catch (Exception e) {
+		
+			 if(!e.getMessage().equals("No value present")) {
+	    		  e.printStackTrace();
+	    	  }
+			return null;
+		}
+		
+	}
+
 	public void closeConnection() {
 
 		if (primaryConnection != null) {
@@ -132,13 +168,31 @@ public class ConnectionManager {
 		}
 	}
 
-	public static void addConnection(IConnection<?> connection) {
-
+	public void addConnection(IConnection<?> connection) {
+		
+		
+      try {
+    	  Optional<IConnection<?>>Iconnection = list.stream().filter(
+  				connectionObj -> connectionObj.getName().toLowerCase().equalsIgnoreCase(connection.getName())
+  				).findFirst();
+  		
+  		Iconnection.get();
+  		throw new DuplicateConnectionNameException();
+  		 
+      }catch (Exception e) {
+    	  
+    	  if(!e.getMessage().equals("No value present")) {
+    		  e.printStackTrace();
+    	  }
+    	 
+		 
+	}
+		
 		list.add(connection);
 
 	}
 
-	public static void removeConnection(String connectionTypeName) {
+	public void removeConnection(String connectionTypeName) {
 
 		if (list.size() == 0) {
 			return;
@@ -146,7 +200,7 @@ public class ConnectionManager {
 
 		list.forEach(connection -> {
 
-			String connectionType = connection.geConnectionType().toString().toLowerCase();
+			String connectionType = connection.getConnectionType().toString().toLowerCase();
 			if (connectionType.equals(connectionTypeName.toLowerCase())) {
 
 				if (primaryConnection == connection) {
@@ -159,14 +213,14 @@ public class ConnectionManager {
 		});
 	}
 
-	public static ConnectionType getConnectionType() {
+	public ConnectionType getConnectionType() {
 		return connectionType;
 	}
 
-	public static Connection getLogConnecton() {
+	public Connection getLogConnecton() {
 
 		if (logConnection == null) {
-			logConnection = new SqliteConnection("log.db");
+			logConnection = new SqliteConnection("log","log.db");
 		}
 		try {
 			testConnection();
@@ -175,6 +229,14 @@ public class ConnectionManager {
 			e.printStackTrace();
 		}
 		return logConnection.openConnection();
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

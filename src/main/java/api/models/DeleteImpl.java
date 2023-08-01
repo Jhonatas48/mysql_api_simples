@@ -1,5 +1,7 @@
 package api.models;
 
+import api.connection.ConnectionManager;
+import api.connection.IConnection;
 import api.interfaces.ICommitAction;
 import api.interfaces.IDelete;
 import api.models.enums.TransactionType;
@@ -7,6 +9,7 @@ import api.models.enums.TransactionType;
 class DeleteImpl implements IDelete {
 
 	private String table;
+	private ConnectionManager connection=null;
 	@Override
 	public IDelete setTable(String table) {
 		this.table=table;
@@ -19,7 +22,19 @@ class DeleteImpl implements IDelete {
 		commitAction.setTable(table);
 		commitAction.setFilter(filter);
 		commitAction.setType(TransactionType.DELETE);
+		commitAction.setConnectionManager(connection);
 		return commitAction;
+	}
+
+	@Override
+	public IDelete setConnectionManager(ConnectionManager connectionManager) {
+		// TODO Auto-generated method stub
+		this.connection = connectionManager;
+		return this;
+	}
+
+	public ConnectionManager getConnectionManager() {
+		return connection;
 	}
 
 

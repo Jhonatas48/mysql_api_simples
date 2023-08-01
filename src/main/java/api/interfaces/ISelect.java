@@ -2,6 +2,7 @@ package api.interfaces;
 
 import java.util.List;
 
+import api.connection.ConnectionManager;
 import api.models.statements.Result;
 
 public interface ISelect  extends ISQLParameters<ISelect>{
@@ -34,4 +35,6 @@ public interface ISelect  extends ISQLParameters<ISelect>{
 	public ISelect addInnerjoin(String table,String onClause);
 	
 	public ISelect filter(String filter);
+	
+	public ISelect setConnectionManager(ConnectionManager connection);
 }
