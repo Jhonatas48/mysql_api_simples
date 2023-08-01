@@ -27,7 +27,7 @@ OBS: É fortemente recomendável também ter um **nome único** para cada Connec
 
 Método responsável por registrar a conexão.
 
-**Erros Retornados:**
+<mark style="background-color:red;">**Erros Retornados**</mark>**:**
 
 * DuplicateConnectionNameException : Retornado quando o nome da conexão já existe
 * Exception : Ocorre quando qualquer erro aconteçe ao tentar registrar a conexão
