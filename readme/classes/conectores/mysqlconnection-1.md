@@ -14,7 +14,7 @@ public SqliteConnection(String name,String fileNamePath)
 
 <summary><mark style="color:red;">Erros</mark></summary>
 
-* <mark style="color:red;">NullPointerException</mark> : Ocorre quando o nome é vazio ou nulo . Ou caso o fileNamePath for vázio
+* <mark style="color:red;">NullPointerException</mark> : Ocorre quando o nome é vazio ou nulo . Ou caso o fileNamePath for vazio
 
 </details>
 
