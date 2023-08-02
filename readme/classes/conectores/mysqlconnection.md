@@ -103,8 +103,8 @@ Método responsável por fechar a conexão com o banco de dados
 
 <details>
 
-<summary>public <a href="../../enums/connectiontype.md">ConnectionType</a> getConnectionType()</summary>
+<summary>public <a href="../../../doc/enums/connectiontype.md">ConnectionType</a> getConnectionType()</summary>
 
-Retorna o tipo da Conexão sendo [ConnectionType.MYSQL](../../enums/connectiontype.md)
+Retorna o tipo da Conexão sendo [ConnectionType.MYSQL](../../../doc/enums/connectiontype.md)
 
 </details>

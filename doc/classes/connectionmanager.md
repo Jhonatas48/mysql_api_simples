@@ -31,9 +31,9 @@ OBS: É fortemente recomendável também ter um **nome único** para cada Connec
 
 ### Métodos Da Classe
 
-#### public void addConnection(IConnection\<?> connection)
+#### public void addConnection([IConnection](../../readme/classes/iconnection.md)\<?> connection)
 
-Método responsável por registrar a conexão.
+Método responsável por registrar o conector do banco de dados a ser usado.
 
 <details>
 
@@ -59,9 +59,9 @@ Método responsável de abrir e obter a conexão
 
 </details>
 
-#### public IConnection\<?> getConnectionByName(String name)
+#### public [IConnection](../../readme/classes/iconnection.md)\<?> getConnectionByName(String name)
 
-Retorna uma conexão conforme o nome da conexão
+Retorna um conector de banco de dados conforme o nome da conexão
 
 <details>
 
