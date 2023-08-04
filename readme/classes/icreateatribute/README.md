@@ -8,3 +8,7 @@ description: >-
 # ICreateAtribute
 
 Para todas essas classes é necessário definir o construtor, algumas classes tem campos obrigatórios por isso veja as particularidades de cada classe
+
+{% hint style="info" %}
+No geral se atente aos campos da classe Foreign Key que precisa de mais parâmetros
+{% endhint %}
