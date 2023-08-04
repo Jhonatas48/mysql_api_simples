@@ -9,3 +9,4 @@ description: Representa o tipo de atributo a ser colocado no campo do banco de d
 * PRIMARY\_KEY
 * UNIQUE
 * FOREIGN\_KEY
+* NOT\_NULL
