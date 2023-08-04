@@ -24,3 +24,7 @@
     * [TransactionType](doc/enums/transactiontype.md)
     * [ConnectionType](doc/enums/connectiontype.md)
     * [CreateAtributes](doc/enums/createatributes.md)
+  * [Exemplos](readme/exemplos/README.md)
+    * [Criando o ConnectionManager](readme/exemplos/criando-o-connectionmanager.md)
+    * [Transaçoes](readme/exemplos/transacoes/README.md)
+      * [Criar Tabela](readme/exemplos/transacoes/criar-tabela.md)
