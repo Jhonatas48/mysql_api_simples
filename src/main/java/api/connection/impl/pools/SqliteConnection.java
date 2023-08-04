@@ -42,7 +42,7 @@ public class SqliteConnection extends ConnectionAtributesFiles implements IConne
 			connection = DriverManager.getConnection(getAtributesConnection());
 			
 		} catch (SQLException | ClassNotFoundException e) {
-			System.out.println("Erro ao abrir conexao com o SQLITE");
+			System.out.println("Error opening connection with SQLITE");
 			e.printStackTrace();
 		}
 		return connection;
@@ -69,7 +69,7 @@ public class SqliteConnection extends ConnectionAtributesFiles implements IConne
 			try {
 				resultSet.close();
 			} catch (SQLException e) {
-				System.out.println("Erro ao abrir conexao com o SQLITE");
+				System.out.println("Error closing ResultSet");
 				e.printStackTrace();
 			}
 		}

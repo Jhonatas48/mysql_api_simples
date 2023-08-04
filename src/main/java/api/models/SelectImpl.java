@@ -56,7 +56,7 @@ class SelectImpl extends PerformTransaction implements ISelect {
 		String[] tableArguments = table.split(" ");
 		
 		if(tableArguments.length < 2) {
-			System.out.println("Faltou passar a variavel");
+			System.out.println("Missed passing the variable that represents the table in the Inner Join");
 			return null;
 		}
 		String innerJoins = "";

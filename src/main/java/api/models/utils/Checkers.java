@@ -47,13 +47,13 @@ public class Checkers {
 	
 	public static void valideListNotEmpty(List<?>list,String listaName) {
 		if(isListEmpty(list)) {
-			throw new NullPointerException("A Lista "+listaName+" não pode ser vazia");
+			throw new NullPointerException("List "+listaName+" cannot be empty");
 		}
 	}
 	public static void validateStringNotNull(String string,String nameString) {
 		
 		if(isEmpty(string)) {
-			throw new NullPointerException("Campo "+nameString+" nao pode ser nulo");
+			throw new NullPointerException("Field "+nameString+" cannot be null");
 		}
 		
 	}
@@ -69,7 +69,7 @@ public class Checkers {
 	public static boolean validadeObjectNotNull(Object object,String nameString) {
 		
 		if(object==null) {
-			throw new NullPointerException("O objeto"+nameString+" nao pode ser nulo");
+			throw new NullPointerException("Object"+nameString+" cannot be null");
 		}
 		
 		return true;

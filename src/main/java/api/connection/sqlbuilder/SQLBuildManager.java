@@ -62,7 +62,7 @@ public class SQLBuildManager  {
 		
 		if(sql ==null) {
 			
-			throw new NullPointerException("String SQL nao encontrada!");
+			throw new NullPointerException("SQL string not found!");
 		}
 		
 		return sql;
@@ -83,7 +83,7 @@ public class SQLBuildManager  {
 		
 		if(sql ==null) {
 			
-			throw new NullPointerException("String SQL nao encontrada!");
+			throw new NullPointerException("SQL string not found!");
 		}
 		
 		return null;

@@ -69,7 +69,7 @@ public class MysqlConnection extends TCPConnectionAtributes implements IConnecti
 			try {
 				connection.close();
 			} catch (SQLException e) {
-				System.out.println("Erro ao fechar conexao com o MYSQL");
+				System.out.println("Error closing connection with MYSQL");
 				e.printStackTrace();
 			}
 		}

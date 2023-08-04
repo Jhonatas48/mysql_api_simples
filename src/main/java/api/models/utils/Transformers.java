@@ -56,7 +56,7 @@ public class Transformers {
                     field.set(bean, columnValue);
                 } else {
                     // Campo não encontrado, registrar um aviso ou lançar uma exceção
-                    System.out.println("Aviso: O campo '" + columnName + "' não foi encontrado na classe " + clazz.getName());
+                    System.out.println("Warning: Field '" + columnName + "' not found in class " + clazz.getName());
                 }
             }
 

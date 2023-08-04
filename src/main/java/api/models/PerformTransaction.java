@@ -91,7 +91,7 @@ import api.models.utils.Checkers;
 				throw new ColumnsIsNullException("The Primakey Key is not defined");
 			}
 			if(create.getColums().isEmpty() && create.getPrimaryKey() == null) {
-				throw new NullPointerException("Tabelas sem colunas,adicione as colunas primeiro");
+				throw new NullPointerException("Tables without columns, add columns first");
 				
 			}
 			//System.out.println("SQL: "+SQLBuildManager.buildSQL(ConnectionManager.getConnectionType(),TransactionType.CREATE_TABLE, create));
@@ -153,11 +153,11 @@ import api.models.utils.Checkers;
         
         if(builders == null) {
         	
-        	throw new NullPointerException("Objeto da classe Insert necessario!");
+        	throw new NullPointerException("Insert class object required!");
         }
         if(!(builders.length <=1)) {
         	
-        	throw new NullPointerException("Objeto da classe Insert necessario!");
+        	throw new NullPointerException("Insert class object required!");
         	
         }
         if(builders.length == 1) {
@@ -271,12 +271,12 @@ import api.models.utils.Checkers;
         
         if(builders == null) {
         	
-        	throw new NullPointerException("Objeto da classe Update necessario!");
+        	throw new NullPointerException("Insert class object required!");
         }
        
         if(builders.length == 0) {
         	
-        	throw new NullPointerException("Objeto da classe Update necessario!");
+        	throw new NullPointerException("Insert class object required!");
         	
         }
         if(builders.length == 1) {
@@ -335,12 +335,12 @@ import api.models.utils.Checkers;
         
         if(builders == null) {
         	
-        	throw new NullPointerException("Objeto da classe Delete necessario!");
+        	throw new NullPointerException("Insert class object required!");
         }
        
         if(builders.length == 0) {
         	
-        	throw new NullPointerException("Objeto da classe Delete necessario!");
+        	throw new NullPointerException("Insert class object required!");
         	
         }
         if(builders.length == 1) {
@@ -468,7 +468,7 @@ import api.models.utils.Checkers;
 			printDebbug(preparedStatement);
 			if(preparedStatement.executeUpdate() == 0) {
 				
-				throw new ConnectException("ocorreu um erro ao salvar a transação nos logs na tabela transactions");
+				throw new ConnectException("An error occurred while saving the transaction to the logs in the transactions table");
 				
 			}
 			
@@ -483,7 +483,7 @@ import api.models.utils.Checkers;
 			
 			if(result ==null) {
 				
-				throw new NullPointerException("Resultado dos log sem resultado para consulta: "+sql);
+				throw new NullPointerException("Result of the logs with no result for query: "+sql);
 			}
 			int id=result.getInt("id");
 			
@@ -498,7 +498,7 @@ import api.models.utils.Checkers;
 			for(Object object:list) {
 				
 				if(!insertTransactionLog(object,id, time,counter)) {
-					throw new ConnectException("Erro ao tentar inserir o objeto "+object.toString());
+					throw new ConnectException("Error when trying to insert object "+object.toString());
 				}
 				counter++;
 			}
@@ -536,7 +536,7 @@ import api.models.utils.Checkers;
 			
 			if(preparedStatement.executeUpdate() == 0) {
 				
-				throw new ConnectException("ocorreu um erro ao salvar a transação nos logs na tabela transactions_values");
+				throw new ConnectException("An error occurred while saving the transaction to the logs in the transactions_values ​​table");
 				
 				
 			}
@@ -547,7 +547,7 @@ import api.models.utils.Checkers;
 			
 		} catch (SQLException e) {
 			exception = e;
-			logger.error("Erro ao inserir um registro na tabela transactions_values");
+			logger.error("Error inserting a record in the transactions_values ​​table");
 			e.printStackTrace();
 			return false;
 		} catch (ConnectException e) {
@@ -582,7 +582,7 @@ import api.models.utils.Checkers;
     			printDebbug(preparedStatement);
     			if(preparedStatement.executeUpdate() == 0) {
     				
-    				throw new ConnectException("ocorreu um erro ao salvar a transação nos logs na tabela lastest_transaction");
+    				throw new ConnectException("An error occurred while saving the transaction to the logs in the lastest_transaction table");
     				
     			}
     			
