@@ -28,3 +28,4 @@
     * [Criando o ConnectionManager](readme/exemplos/criando-o-connectionmanager.md)
     * [Transaçoes](readme/exemplos/transacoes/README.md)
       * [Criar Tabela](readme/exemplos/transacoes/criar-tabela.md)
+      * [Inserir Dados Na Tabela](readme/exemplos/transacoes/inserir-dados-na-tabela.md)
