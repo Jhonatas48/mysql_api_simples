@@ -4,7 +4,11 @@ description: Representa a interface de uma conexão, que verá na próxima seç�
 
 # IConnection
 
+
+
+{% hint style="info" %}
 Você não precisa se preocupar de passar o parâmetros e métodos para essa interface já que a API já cuida de fazer isso, já que isso quem se encarrega de gerenciar é o [ConnectionManager](../../doc/classes/connectionmanager.md)
+{% endhint %}
 
 ### Métodos
 
