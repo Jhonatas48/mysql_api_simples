@@ -47,7 +47,7 @@ class InsertImpl implements IInsert{
 	}
 	@Override
 	public IInsert setConnectionManager(ConnectionManager connection) {
-		Checkers.validadeObjectNotNull(connectionManager, "connectionManager");
+		Checkers.validadeObjectNotNull(connection, "connectionManager");
 		this.connectionManager = connection;
 		return this;
 	}

@@ -1,6 +1,7 @@
 package mysql_api;
 
 import api.connection.ConnectionManager;
+import api.connection.impl.pools.MysqlConnection;
 import api.connection.impl.pools.SqliteConnection;
 import api.models.Transaction;
 import api.models.atributes.PrimaryKey;
@@ -10,6 +11,7 @@ import api.models.statements.Row;
 public class Teste {
 
 	public static void main(String[] args) {
+	
 		
 //		ConnectionManager connectionManager1 = new ConnectionManager("teste1");
 //		connectionManager1.addConnection(new SqliteConnection("connection1", "db1.db"));

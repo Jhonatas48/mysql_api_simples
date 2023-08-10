@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.github.jhonatas48</groupId>
   <artifactId>api-mysql</artifactId>
-  <version>0.0.2.0.4.1</version>
+  <version>0.0.2.0.4.1.1</version>
   <packaging>jar</packaging>
   
   <distributionManagement> 
