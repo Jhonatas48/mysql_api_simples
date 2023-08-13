@@ -22,12 +22,13 @@ MysqlConnection mysql = new MysqlConnection("connection_name");
 mysql.setAdress("domain/IP"); //Obrigatório
 //Opcional
 mysql.setPort(3306); //Por padrão a porta será 3306
-mysql.setUsername("your_database_user");//Obrigatório
+
 /*
  *  Opcional, entretando é altamente recomendável definir uma senha
  *  para seu usuário do banco de dados
  */
-mysql.setUsername("your_database_user_password");
+mysql.setUsername("your_database_user");//Obrigatório
+mysql.setPassword("your_database_user_password");
 mysql.setDatabase("your_database");//Obrigatório
 //Opcional
 mysql.setUseSSL(false); // Defino se o banco de dados está usando SSL
