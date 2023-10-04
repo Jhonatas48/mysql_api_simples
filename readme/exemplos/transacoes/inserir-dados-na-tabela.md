@@ -44,3 +44,31 @@ new Transaction()
 //Executa o comando no banco de dados
 .commit();
 ```
+
+### Inserindo dados aplicando o Consumer
+
+```java
+IConnection connection = new SqliteConnection("name_connection", "db2.db");
+
+new Transaction()
+.insert()
+//Define a conexão a ser usada
+.setConnection(connection)
+//Define em qual tabela deverá ser inserido
+.setTable("teste1")
+//Define o nome da tabela e o dado a ser inserido
+.addColumn("teste","teste1")
+
+//Executa o comando no banco de dados e obtém o erro
+.commit(new Consumer<Throwable>(){
+    @Override
+     public void accept(Throwable error) {
+     
+       //Checagem obrigatória para quando usa o método consumer
+        if(error != null){
+           .printStackTrace();
+        }
+				
+    }
+});
+```
