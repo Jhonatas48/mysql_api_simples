@@ -131,7 +131,7 @@ class SelectImpl extends PerformTransaction implements ISelect {
 	public <T> T queryResult(Class<T> clazz) {
 		 Result result = queryResult(false);
 
-		    if (Checkers.isObjectNotNull(result) || Checkers.isListEmpty(result.getRows())) {
+		    if (!Checkers.isObjectNotNull(result) || Checkers.isListEmpty(result.getRows())) {
 		        return null;
 		    }
 		    
