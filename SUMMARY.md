@@ -29,3 +29,4 @@
     * [Transaçoes](readme/exemplos/transacoes/README.md)
       * [Criar Tabela](readme/exemplos/transacoes/criar-tabela.md)
       * [Inserir Dados Na Tabela](readme/exemplos/transacoes/inserir-dados-na-tabela.md)
+      * [Consultando Dados na Tabela](readme/exemplos/transacoes/consultando-dados-na-tabela.md)

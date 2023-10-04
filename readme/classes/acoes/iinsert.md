@@ -54,6 +54,10 @@ Define a coluna e o valor do campo na tabela do banco de dados onde o dado será
 
 </details>
 
+{% hint style="warning" %}
+Qualquer um dos métodos abaixos pode ser chamados para performar a ação de Insert no banco de dados
+{% endhint %}
+
 {% hint style="info" %}
 Método responsável por performar a ação no banco de dados
 {% endhint %}
@@ -76,6 +80,6 @@ Veja o exemplo [aqui](../../exemplos/transacoes/inserir-dados-na-tabela.md#inser
 
 <summary>public boolean commit(Consumer&#x3C;? super Throwable> failure)</summary>
 
-Retorna `true` caso o registro for inserido com sucesso,caso não retorna `false`. Retornando juntamente o Cconsumer caso der erro,caso contrario retorna um Consumer vazio
+Retorna `true` caso o registro for inserido com sucesso,caso não retorna `false`. Retornando juntamente o Consumer caso der erro,caso contrario retorna um Consumer vazio
 
 </details>
