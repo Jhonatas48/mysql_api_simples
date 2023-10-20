@@ -28,21 +28,22 @@ public class SqliteConnection extends ConnectionAtributesFiles implements IConne
 	
 	@Override
 	public String getAtributesConnection() {
-	
+		
 		return "jdbc:sqlite"+getAtributesConnectionFiles();
 	}
 	@Override
 	public Connection openConnection() {
-		
+		System.out.println("Sqlite");
 		Connection connection=null;
-		
+		System.out.println("Conexao");
 		try {
-			Class.forName("org.sqlite.JDBC");
-
+			System.out.println("Carregando JDBC para Sqlite");
+			//Class.forName("org.sqlite.JDBC");
+			System.out.println("Tentando conectar");
 			connection = DriverManager.getConnection(getAtributesConnection());
+			System.out.println("Conectado");
+		} catch (SQLException  e) {
 			
-		} catch (SQLException | ClassNotFoundException e) {
-			System.out.println("Error opening connection with SQLITE");
 			e.printStackTrace();
 		}
 		return connection;

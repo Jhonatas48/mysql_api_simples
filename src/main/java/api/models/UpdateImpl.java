@@ -11,7 +11,7 @@ import api.models.utils.Checkers;
 class UpdateImpl implements IUpdate {
 	private String table;
 	private ConnectionManager connection=null;
-	private LinkedHashMap<String,String>columns = new LinkedHashMap<String,String>();
+	private LinkedHashMap<String,Object>columns = new LinkedHashMap<>();
 	@Override
 	public IUpdate setTable(String table) {
 		

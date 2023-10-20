@@ -1,6 +1,7 @@
 package api.interfaces.actions;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import api.connection.ConnectionManager;
 import api.interfaces.ISQLParameters;
@@ -19,9 +20,12 @@ public interface ISelect  extends ISQLParameters<ISelect>{
 	 */
     public <T> List<T> queryList(Class<T> clazz);
     
+    public <T> void queryListAsync(Class<T> clazz,Consumer<List<T>>function);
+    
     public <T> T queryResult(Class<T> clazz);
     
-	
+    public <T> void queryResultAsync(Class<T>classz,Consumer<T>function);
+    
 	public Result queryResult(boolean useLogTransaction);
 	
 	public Exception getException();

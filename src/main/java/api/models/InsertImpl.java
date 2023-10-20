@@ -11,7 +11,7 @@ import api.models.utils.Checkers;
 class InsertImpl implements IInsert{
 
 	private String table;
-	private LinkedHashMap<String,String>columns = new LinkedHashMap<>();
+	private LinkedHashMap<String,Object>columns = new LinkedHashMap<>();
 	private ConnectionManager connectionManager;
 	@Override
 	public IInsert setTable(String table) {
@@ -19,7 +19,7 @@ class InsertImpl implements IInsert{
 		return this;
 	}
 	@Override
-	public IInsert addColumn(String column, String value) {
+	public IInsert addColumn(String column, Object value) {
 		this.columns.put(column, value);
 		return this;
 	}

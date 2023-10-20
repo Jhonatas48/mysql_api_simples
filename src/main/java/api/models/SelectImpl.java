@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 
 import api.connection.ConnectionManager;
 import api.interfaces.actions.ISelect;
@@ -104,15 +106,42 @@ class SelectImpl extends PerformTransaction implements ISelect {
 		
 		return getGetErrorException();
 	}
+	
+	@Override
+	 public <T> void queryListAsync(Class<T> clazz,Consumer<List<T>>function) {
+		
+		Checkers.validadeObjectNotNull(function,"function");
+		Checkers.validadeObjectNotNull(clazz,"clazz");
+//		CompletableFuture.supplyAsync(() -> queryList(clazz)) // Executa a consulta de forma assíncrona
+//	        .thenAccept(function); // Chama a função Consumer com a lista de resultados
+		System.out.println("Antes de supplyAsync");
 
+		CompletableFuture.supplyAsync(() -> {
+		    System.out.println("Dentro de supplyAsync");
+		   // return queryList(clazz);
+		    List<T>list = queryList(clazz);
+		   
+		    System.out.println(list==null);
+		    function.accept(list);
+		    System.out.println("Dentro de supplyAsync");
+		    return null;
+		});
+		
+
+		//System.out.println("Após de supplyAsync");
+
+	}
+	
 	@Override
 	public <T> List<T> queryList(Class<T> clazz) {
+		 System.out.println("-----------------------");
 	    Result result = queryResult(false);
-
+	    System.out.println("-----------------------");
 	    if (!Checkers.isObjectNotNull(result) || Checkers.isListEmpty(result.getRows())) {
-	        return null;
+	    	 System.out.println("000000000000000000000000000000");
+	    	return null;
 	    }
-
+	    System.out.println("-----------------------");
 	    List<T> resultList = new ArrayList<>();
 	    for (Row row : result.getRows()) {
 	        try {
@@ -126,6 +155,15 @@ class SelectImpl extends PerformTransaction implements ISelect {
 
 	    return resultList;
 	}
+	
+	@Override
+	public <T> void queryResultAsync(Class<T>classz,Consumer<T>function) {
+		
+		Checkers.validadeObjectNotNull(function,"function");
+		Checkers.validadeObjectNotNull(classz,"classz");
+		CompletableFuture.supplyAsync(() -> queryResult(classz)) // Executa a consulta de forma assíncrona
+	        .thenAccept(function); // Chama a função Consumer com o resultado
+	}
 
 	@Override
 	public <T> T queryResult(Class<T> clazz) {
@@ -134,6 +172,7 @@ class SelectImpl extends PerformTransaction implements ISelect {
 		    if (!Checkers.isObjectNotNull(result) || Checkers.isListEmpty(result.getRows())) {
 		        return null;
 		    }
+		    
 		    
 		    try {
 	            T instance = Transformers.instanceOf(clazz,result.getRows().get(0));

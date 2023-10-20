@@ -1,8 +1,16 @@
 package mysql_api;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.function.Consumer;
+
 import api.connection.ConnectionManager;
 import api.connection.impl.pools.MysqlConnection;
 import api.connection.impl.pools.SqliteConnection;
+import api.interfaces.ICommitAction;
+import api.models.CommitActionImpl;
 import api.models.Transaction;
 import api.models.atributes.PrimaryKey;
 import api.models.statements.Result;
@@ -10,12 +18,25 @@ import api.models.statements.Row;
 
 public class Teste {
 
+	static int c=1;
 	public static void main(String[] args) {
 	
-		
-//		ConnectionManager connectionManager1 = new ConnectionManager("teste1");
-//		connectionManager1.addConnection(new SqliteConnection("connection1", "db1.db"));
-//
+
+		ConnectionManager connectionManager1 = new ConnectionManager("teste1");
+		connectionManager1.addConnection(new SqliteConnection("connection1", "teste.db"));
+		System.out.println("teste");
+//		try {
+//			PreparedStatement s = connectionManager1.getConnection().prepareStatement("Insert into user(username,password)values(?,?)");
+//			Db db = new Db();
+//			db.insert(s,"t");
+//			db.insert(s, "teste");
+//			System.out.println(s.toString());
+//			s.executeUpdate();
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+////
 //		ConnectionManager connectionManager2 = new ConnectionManager("teste2");
 //		connectionManager2.addConnection(new SqliteConnection("connection2", "db2.db"));
 //
@@ -54,24 +75,71 @@ public class Teste {
 //		new Transaction().delete().setConnectionManager(connectionManager1).setTable("teste1").filter("id=2").commit();
 //		new Transaction().delete().setConnectionManager(connectionManager2).setTable("teste2").filter("id=2").commit();
 //		
-		SqlBuilder sqlTransaction;
-		
-		 sqlTransaction = new SqlBuilder("sqlite", "teste", null, null, null, null, null, null);
-	     sqlTransaction.createBuilder().setTable("lminvites_users").addColumn("id", "INTEGER", new PrimaryKey().addAutoIncrement()).addColumn("discordId", "VARCHAR(255)").addColumn("uuid", "VARCHAR(255)").addColumn("invitesReals", "INTEGER").addColumn("invitesFakes", "INTEGER").addColumn("invitesLeaves", "INTEGER").commit();
-	     LminvitesUser u =  sqlTransaction
-	     .selectBuilder()
-	     .setTable("lminvites_users")
-	     .addColumn("discordId")
-	     .addColumn("uuid")
-	     .addColumn("invitesReals")
-	     .addColumn("invitesFakes")
-	     .addColumn("invitesLeaves")
-	     .queryResult(LminvitesUser.class);
-	    
-	     System.out.println("Terminou");
+//		SqlBuilder sqlTransaction;
 //		
+//		 sqlTransaction = new SqlBuilder("sqlite", "teste", null, null, null, null, null, null);
+//	     sqlTransaction.createBuilder().setTable("lminvites_users").addColumn("id", "INTEGER", new PrimaryKey().addAutoIncrement()).addColumn("discordId", "VARCHAR(255)").addColumn("uuid", "VARCHAR(255)").addColumn("invitesReals", "INTEGER").addColumn("invitesFakes", "INTEGER").addColumn("invitesLeaves", "INTEGER").commit();
+//	     LminvitesUser u =  sqlTransaction
+//	     .selectBuilder()
+//	     .setTable("lminvites_users")
+//	     .addColumn("discordId")
+//	     .addColumn("uuid")
+//	     .addColumn("invitesReals")
+//	     .addColumn("invitesFakes")
+//	     .addColumn("invitesLeaves")
+//	     .queryResult(LminvitesUser.class);
+//	    
+//	     System.out.println("Terminou");
+//////		
+//	     new Transaction().
+//	    		//Define o método de uso como o SELECT
+//	    		select()
+//	    		//Define o ConnectionManager a ser usado
+//	    		.setConnectionManager(connectionManager1)
+//	    		//Define a tabela a ser consultada
+//	    		.setTable("users")
+//	    		//Performa a ação no banco de dados
+//	    		.queryListAsync(User.class, new Consumer<List<User>>(){
+//
+//					@Override
+//					public void accept(List<User> u) {
+//						// TODO Auto-generated method stub
+//						System.out.println("assincrono");
+//					}
+//	    			
+////	    		});
+		  new Transaction()
+//  		//Define o método de uso como o Insert
+       		.create()
+//  		//Define o ConnectionManager a ser usado
+  		.setConnectionManager(connectionManager1)
+//  		//Define a tabela a ser consultada
+  		.setTable("test")
+  		.addColumn("id","int", new PrimaryKey().addAutoIncrement()).addColumn("teste","varchar(30)")
+  		
+  		.commitAsync(new Consumer<Boolean>() {
+
+			@Override
+			public void accept(Boolean t) {
+				System.out.println("executou assincrono");
+				
+			}
+		});
+	
 		
-		
+  		//.addColumn("username", "11111")
+  		//.addColumn("password", "password");
+  		
+//		ConnectionManager connectionManager1 = new ConnectionManager("teste1");
+//		connectionManager1.addConnection(new SqliteConnection("connection1", "teste.db"));
+//		
+//		User user = new Transaction()
+//				.select()
+//				.setConnectionManager(connectionManager1)
+//				.setTable("user u")
+//				.addInnerjoin("table t","u.id=t.id")
+//				.queryResult(User.class);
+//		System.out.println(user.toString());
 		// TODO Auto-generated method stub
 //     	ConnectionManager.addConnection(new SqliteConnection("sqlite","database"));
 //     	ConnectionManager.addConnection(new SqliteConnection("teste","teste"));
@@ -104,5 +172,7 @@ public class Teste {
 //	            System.out.println(fieldModifiers + " " + fieldType + " " + fieldName);
 //	        }
 	}
+	
+	
 
 }

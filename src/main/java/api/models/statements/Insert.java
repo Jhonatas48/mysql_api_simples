@@ -6,7 +6,7 @@ import java.util.List;
 public class Insert {
     private String table = "";
     private String columns = "";
-    private String[] data = null;
+    private Object[] data = null;
     public Insert(String table, String columns, String... data) {
         this.table = table;
         this.columns = columns;
@@ -16,7 +16,7 @@ public class Insert {
     public void setColumns(String columns) {
         this.columns = columns;
     }
-    public void setData(String... data) {
+    public void setData(Object... data) {
         this.data = data;
     }
     public void setData(List<String> data) {
@@ -39,7 +39,7 @@ public class Insert {
     public String getTable() {
         return table;
     }
-    public String[] getData() {
+    public Object[] getData() {
         return data;
     }
 }

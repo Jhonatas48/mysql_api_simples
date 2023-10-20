@@ -3,7 +3,10 @@ package api.models;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import api.connection.ConnectionManager;
 import api.exception.ColumnsIsNullException;
@@ -23,7 +26,7 @@ import api.models.utils.Checkers;
 class CreateImpl implements ICreate{
 
 	private String table;
-	private LinkedHashMap<String,String>columns = new LinkedHashMap<String,String>();
+	private LinkedHashMap<String,Object>columns = new LinkedHashMap<String,Object>();
 	private IConnection<?> connection=null;
 	private ConnectionManager connectionManager = null;
 	private IPrimaryKey primaryKey;
@@ -44,37 +47,100 @@ class CreateImpl implements ICreate{
 		return this;
 		
 	}
+	
+	@Override
+	public void commitAsync(Consumer<Boolean>action,Consumer<Throwable>error) {
+		Checkers.validadeObjectNotNull(action, "action");
+	
+	try {
+	System.out.println("-----------------");
+	System.out.println("commitAction");
+	CommitActionImpl commitAction = new CommitActionImpl();
+	System.out.println("commitAction Connection");
+	commitAction.setConnection(connection);
+	System.out.println("commitAction Columns");
+	commitAction.setColumns(columns);
+	System.out.println("commitAction TransactionType");
+	commitAction.setType(TransactionType.CREATE_TABLE);
+	System.out.println("commitAction Table");
+	commitAction.setTable(table);
+	System.out.println("commitAction PrimaryKey");
+	commitAction.setPrimaryKey(this.primaryKey);
+	System.out.println("commitAction ForeignKey");
+	commitAction.setForeignKeys(foreignKeys);
+	System.out.println("commitAction Unique");
+	commitAction.setUniqueKeys(this.uniqueKeys);
+	System.out.println("commitAction ConnectionManager");
+	commitAction.setConnectionManager(this.connectionManager);
+	 System.out.println("commit");
+		 commitAction.commitAsync(action,error);
+		 System.out.println("saiu commit");
+		if(error != null && commitAction.getGetErrorException() != null) {
+		   error.accept(commitAction.getGetErrorException());	
+		}
+		 System.out.println("saiu");
+		
+	}catch (Exception e) {
+		// TODO: handle exception
+		e.printStackTrace();
+	}
+
+
+  }
+	@Override
+	public void commitAsync(Consumer<Boolean>action) {
+		commitAsync(action, null);
+	}
 	@Override
 	public boolean commit(Consumer<? super Throwable> failure) {
+		 System.out.println("entrou");
 		Checkers.validateStringNotNull(table, "table");
+		System.out.println("-----------------");
 		if(!Checkers.isObjectNotNull(primaryKey)) {
 			throw new ColumnsIsNullException("The Primakey Key is not defined");
 		}
+		System.out.println("-----------------");
 		if(columns == null && primaryKey == null) {
 			throw new ColumnsIsNullException();
 		}
+		System.out.println("-----------------");
 		if(columns.isEmpty()&& primaryKey == null) {
 			throw new ColumnsIsNullException();
 		}
-		
-		
+		try {
+		System.out.println("-----------------");
+		System.out.println("commitAction");
 		CommitActionImpl commitAction = new CommitActionImpl();
+		System.out.println("commitAction Connection");
 		commitAction.setConnection(connection);
+		System.out.println("commitAction Columns");
 		commitAction.setColumns(columns);
+		System.out.println("commitAction TransactionType");
 		commitAction.setType(TransactionType.CREATE_TABLE);
+		System.out.println("commitAction Table");
 		commitAction.setTable(table);
+		System.out.println("commitAction PrimaryKey");
 		commitAction.setPrimaryKey(this.primaryKey);
+		System.out.println("commitAction ForeignKey");
 		commitAction.setForeignKeys(foreignKeys);
+		System.out.println("commitAction Unique");
 		commitAction.setUniqueKeys(this.uniqueKeys);
+		System.out.println("commitAction ConnectionManager");
 		commitAction.setConnectionManager(this.connectionManager);
-		boolean result = commitAction.commit();
-		
-		if(failure != null && commitAction.getGetErrorException() != null) {
-		  failure.accept(commitAction.getGetErrorException());	
+		 System.out.println("commit");
+			boolean result = commitAction.commit();
+			 System.out.println("saiu commit");
+			if(failure != null && commitAction.getGetErrorException() != null) {
+			  failure.accept(commitAction.getGetErrorException());	
+			}
+			 System.out.println("saiu");
+			return result;
+		}catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
 		}
-		
-		return result;
-		
+	
+		return false;
 	}
 	
 	@Override
@@ -159,14 +225,14 @@ class CreateImpl implements ICreate{
 	/**
 	 * @return the columns
 	 */
-	public LinkedHashMap<String, String> getColumns() {
+	public LinkedHashMap<String, Object> getColumns() {
 		return columns;
 	}
 
 	/**
 	 * @param columns the columns to set
 	 */
-	public void setColumns(LinkedHashMap<String, String> columns) {
+	public void setColumns(LinkedHashMap<String, Object> columns) {
 		this.columns = columns;
 	}
 

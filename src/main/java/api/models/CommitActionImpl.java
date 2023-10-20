@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import api.connection.ConnectionManager;
 import api.connection.sqlbuilder.SQLBuildManager;
@@ -24,18 +26,19 @@ import api.models.statements.Update;
 import api.models.statements.UpdateValue;
 import api.models.utils.Checkers;
 
-class CommitActionImpl extends PerformTransaction implements ICommitAction {
+public class CommitActionImpl extends PerformTransaction implements ICommitAction {
 
 	private String table;
 	private String filter;
 	private TransactionType type;
-	private LinkedHashMap<String,String>columns = new LinkedHashMap<>();
+	private LinkedHashMap<String,Object>columns = new LinkedHashMap<>();
 	private IConnection<?> connection = null;
 	private IPrimaryKey  primaryKey;
 	private boolean autoIncrement= false;
 	private List<IForeignKey>foreignKeys = new ArrayList<>();
 	private List<IUnique>uniqueKeys = new ArrayList<>();
     private ConnectionManager manager;
+    private Consumer<Boolean>consumer=null;
 	/**
 	 * @return the uniqueKeys
 	 */
@@ -48,6 +51,50 @@ class CommitActionImpl extends PerformTransaction implements ICommitAction {
 	 */
 	protected void setUniqueKeys(List<IUnique> uniqueKeys) {
 		this.uniqueKeys = uniqueKeys;
+	}
+	
+	
+	
+	public CommitActionImpl() {
+		System.out.println("construtor");
+	}
+
+	public void commitAsync(Consumer<Boolean>action,Consumer<Throwable>error) {
+		Checkers.validadeObjectNotNull(action, "action");
+		  CompletableFuture.supplyAsync(() -> {
+			  System.out.println("Dentro de supplyAsync");
+			  
+	            boolean result = commit(error); // Chama o método de commit síncrono
+	            System.out.println("Result: "+result);
+	            System.out.println("Saiu de supplyAsync");
+	            return result;
+	        }).thenAccept(result->{
+	        	 System.out.println("If");
+	        	if(result) {
+	        		 System.out.println("Aceito");
+	        		action.accept(result);
+	        	
+	        	}
+	        }).exceptionally(new Function<Throwable, Void>() {
+	            @Override
+	            public Void apply(Throwable t) {
+	                // Lide com a exceção aqui, se necessário
+	            	t.printStackTrace();
+	                return null; // Você pode retornar null ou outro valor de sua escolha
+	            }
+	        });;
+	}
+	public void commitAsync(Consumer<Boolean>action) {
+		Checkers.validadeObjectNotNull(action,"action");
+		CompletableFuture.supplyAsync(() -> {
+		    System.out.println("Dentro de supplyAsync");
+		   // return queryList(clazz
+		    boolean result = commit();
+		    action.accept(result);
+		    System.out.println("Dentro de supplyAsync");
+		    return result;
+		});
+		
 	}
 
 	@Override
@@ -78,29 +125,35 @@ class CommitActionImpl extends PerformTransaction implements ICommitAction {
 		boolean result = false;
 	    switch (type.toString().toUpperCase()) {
 		case "CREATE_TABLE":
+			System.out.println("CREATE");
 			Create create = new Create();
+			System.out.println("CREATE iniciado");
 			create.setTable(table);
+			System.out.println("Tabela definida");
 			create.setForeignKeys(foreignKeys);
 			create.setPrimaryKey(primaryKey);
 			create.setUniqueKeys(uniqueKeys);
+			System.out.println("Mapeando campos");
 			columns.entrySet().forEach(column->{
-				create.addColumn(column.getKey(), column.getValue());
+				create.addColumn(column.getKey(), column.getValue().toString());
 			});
-			
+			System.out.println("Checkando conexao");
 			if(connection != null) {
+				System.out.println("inciando tabela");
 				return createTable(SQLBuildManager.buildSQL(connection.getConnectionType(),TransactionType.CREATE_TABLE, create), connection);
 			}
 			result= createTable(create);
+			System.out.println("Result CREATE "+result);
 			break;
 		case "INSERT":
 			Insert insert = new Insert();
 			insert.setTable(table);
 		
-			List<String> values = new ArrayList<>();
+			List<Object> values = new ArrayList<>();
 			String columnsInsert= "";
 			int count=0;
 			
-			for(Entry<String,String> column:columns.entrySet())
+			for(Entry<String,Object> column:columns.entrySet())
 			{
 				count++;
 				if(count == columns.size()) {
@@ -119,7 +172,7 @@ class CommitActionImpl extends PerformTransaction implements ICommitAction {
 			break;
 	    case "UPDATE":
 	    	UpdateValue updateValue = new UpdateValue();
-	    	for(Entry<String,String> columnUpdate:columns.entrySet())
+	    	for(Entry<String,Object> columnUpdate:columns.entrySet())
 			{
 	    		updateValue.add(columnUpdate.getKey(),columnUpdate.getValue());
 			}
@@ -151,6 +204,7 @@ class CommitActionImpl extends PerformTransaction implements ICommitAction {
 		return this.commit(null);
 	
 	}
+	
 	
 	private boolean checkEmptyColumns() {
 		
@@ -206,11 +260,11 @@ class CommitActionImpl extends PerformTransaction implements ICommitAction {
 	/**
 	 * 
 	 * */
-	public LinkedHashMap<String,String> getColumns() {
+	public LinkedHashMap<String,Object> getColumns() {
 		return columns;
 	}
 
-	protected void setColumns(LinkedHashMap<String,String> columns) {
+	protected void setColumns(LinkedHashMap<String,Object> columns) {
 		this.columns = columns;
 	}
 
@@ -272,6 +326,14 @@ class CommitActionImpl extends PerformTransaction implements ICommitAction {
 
 	public void setConnectionManager(ConnectionManager manager) {
 		this.manager = manager;
+	}
+
+	public Consumer<Boolean> getConsumer() {
+		return consumer;
+	}
+
+	public void setConsumer(Consumer<Boolean> consumer) {
+		this.consumer = consumer;
 	}
 
    
