@@ -56,7 +56,7 @@ tabela \<abreviação da tabela>
 
 **Exemplo**: tabela t
 
-Para mais informações veja um exemplo aqui
+Para mais informações veja um exemplo [aqui](../../exemplos/transacoes/consultando-dados-na-tabela.md#usando-o-innerjoin-na-consulta)
 {% endhint %}
 
 <details>
@@ -64,6 +64,10 @@ Para mais informações veja um exemplo aqui
 <summary>public <a href="iselect.md">ISelect</a> addInnerjoin(String table,String onClause)</summary>
 
 &#x20;Define a tabela a ser usada no inner join e a clausula on
+
+<mark style="color:red;">**Erros**</mark>:
+
+* <mark style="color:red;">NullPointerException</mark>: Ocorre quando o campo `table` ou quando a `onClause` está nulo ou vazio
 
 </details>
 

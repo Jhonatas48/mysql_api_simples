@@ -35,13 +35,13 @@ select()
 
 </code></pre>
 
+## Mapeando Do Banco de Dados Para Classe
+
 {% hint style="danger" %}
 **Atenção**
 
 Para usar esta função os campos da classe devem conter o mesmo nome e tipo do dado da tabela
 {% endhint %}
-
-## Mapeando Do Banco de Dados Para Classe
 
 Para os Próximos exemplos de usos irei definir uma Classe User e irei fazer o mapeamento do banco de dados para a Classe User
 
@@ -139,4 +139,31 @@ new Transaction()
 //Performa a ação no banco de dados e retorna uma lista
 //Mapeando os dados para a Classe User
 .queryResult(User.class);
+```
+
+### Usando o InnerJoin na consulta
+
+{% hint style="info" %}
+Para usar o InnerJoin deve se usar o recurso de renomeação ou apelido na  tabela conforme exemplo abaixo renomei a tabela `user` como u e a tabela `profile` para `p`
+{% endhint %}
+
+```java
+// Criando uma instância da classe Transaction para realizar uma consulta no banco de dados
+User user = new Transaction()
+
+    // Iniciando uma consulta SELECT
+    .select()
+
+    // Configurando o gerenciador de conexão que será usado para se conectar ao banco de dados
+    .setConnectionManager(connectionManager1)
+
+    // Especificando a tabela principal da consulta como 'user' (abreviada como 'u')
+    .setTable("user u")
+
+    // Adicionando uma junção interna (INNER JOIN) com a tabela 'profile' (abreviada como 'p')
+    // A condição de junção é que 'u.id' seja igual a 'p.userid'
+    .addInnerjoin("profile p", "u.id = .userid")
+
+    // Executando a consulta e mapeando os resultados para objetos da classe 'User'
+    .queryResult(User.class);
 ```
