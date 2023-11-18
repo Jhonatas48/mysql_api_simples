@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CountDownLatch;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -52,49 +53,36 @@ public class CommitActionImpl extends PerformTransaction implements ICommitActio
 	protected void setUniqueKeys(List<IUnique> uniqueKeys) {
 		this.uniqueKeys = uniqueKeys;
 	}
-	
-	
-	
+
 	public CommitActionImpl() {
 		System.out.println("construtor");
 	}
 
-	public void commitAsync(Consumer<Boolean>action,Consumer<Throwable>error) {
+	public void commitAsync(Consumer<Boolean> action, Consumer<Throwable> error) {
+
 		Checkers.validadeObjectNotNull(action, "action");
-		  CompletableFuture.supplyAsync(() -> {
-			  System.out.println("Dentro de supplyAsync");
-			  
-	            boolean result = commit(error); // Chama o método de commit síncrono
-	            System.out.println("Result: "+result);
-	            System.out.println("Saiu de supplyAsync");
-	            return result;
-	        }).thenAccept(result->{
-	        	 System.out.println("If");
-	        	if(result) {
-	        		 System.out.println("Aceito");
-	        		action.accept(result);
-	        	
-	        	}
-	        }).exceptionally(new Function<Throwable, Void>() {
-	            @Override
-	            public Void apply(Throwable t) {
-	                // Lide com a exceção aqui, se necessário
-	            	t.printStackTrace();
-	                return null; // Você pode retornar null ou outro valor de sua escolha
-	            }
-	        });;
+
+		manager.getAsyncManager().getService().submit(() -> {
+
+			try{
+
+				boolean result = commit(error); // Chama o método de commit síncrono
+
+				System.out.println("Result: "+result);
+				System.out.println("Saiu de supplyAsync");
+
+				action.accept(result);
+
+			}catch (Exception exception){
+				if(error != null)
+					error.accept(exception);
+			}
+
+		});
+
 	}
 	public void commitAsync(Consumer<Boolean>action) {
-		Checkers.validadeObjectNotNull(action,"action");
-		CompletableFuture.supplyAsync(() -> {
-		    System.out.println("Dentro de supplyAsync");
-		   // return queryList(clazz
-		    boolean result = commit();
-		    action.accept(result);
-		    System.out.println("Dentro de supplyAsync");
-		    return result;
-		});
-		
+		commitAsync(action, null);
 	}
 
 	@Override
@@ -202,7 +190,6 @@ public class CommitActionImpl extends PerformTransaction implements ICommitActio
 	@Override
 	public boolean commit() {
 		return this.commit(null);
-	
 	}
 	
 	

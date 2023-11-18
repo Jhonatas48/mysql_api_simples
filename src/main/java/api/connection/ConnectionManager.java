@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 import api.connection.impl.pools.SqliteConnection;
+import api.core.AsyncManager;
 import api.exception.connection.ConnectionNotEstablishedException;
 import api.exception.connection.DuplicateConnectionNameException;
 import api.interfaces.actions.ITransaction;
@@ -18,6 +19,12 @@ import api.models.enums.ConnectionType;
 import api.models.utils.Checkers;
 
 public class ConnectionManager implements IConnectionManager{
+
+	private static final AsyncManager asyncManager = new AsyncManager(16);
+
+	public AsyncManager getAsyncManager() {
+		return asyncManager;
+	}
 
 	private String name;
 	private boolean firstRun = true;
