@@ -4,11 +4,14 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 import api.connection.ConnectionManager;
 import api.connection.impl.pools.MysqlConnection;
 import api.connection.impl.pools.SqliteConnection;
+import api.core.AsyncManager;
 import api.interfaces.ICommitAction;
 import api.models.CommitActionImpl;
 import api.models.Transaction;
@@ -18,13 +21,14 @@ import api.models.statements.Row;
 
 public class Teste {
 
-	static int c=1;
-	public static void main(String[] args) {
-	
+    public static void main(String[] args) throws InterruptedException {
 
-		ConnectionManager connectionManager1 = new ConnectionManager("teste1");
-		connectionManager1.addConnection(new SqliteConnection("connection1", "teste.db"));
-		System.out.println("teste");
+
+        ConnectionManager connectionManager1 = new ConnectionManager("teste1");
+        connectionManager1.addConnection(new SqliteConnection("connection1", "teste.db"));
+        System.out.println("teste");
+
+
 //		try {
 //			PreparedStatement s = connectionManager1.getConnection().prepareStatement("Insert into user(username,password)values(?,?)");
 //			Db db = new Db();
@@ -108,28 +112,24 @@ public class Teste {
 //					}
 //	    			
 ////	    		});
-		  new Transaction()
-//  		//Define o método de uso como o Insert
-       		.create()
-//  		//Define o ConnectionManager a ser usado
-  		.setConnectionManager(connectionManager1)
-//  		//Define a tabela a ser consultada
-  		.setTable("test")
-  		.addColumn("id","int", new PrimaryKey().addAutoIncrement()).addColumn("teste","varchar(30)")
-  		
-  		.commitAsync(new Consumer<Boolean>() {
 
-			@Override
-			public void accept(Boolean t) {
-				System.out.println("executou assincrono");
-				
-			}
-		});
-	
-		
-  		//.addColumn("username", "11111")
-  		//.addColumn("password", "password");
-  		
+        new Transaction()
+//  		//Define o método de uso como o Insert
+                .create()
+//  		//Define o ConnectionManager a ser usado
+                .setConnectionManager(connectionManager1)
+//  		//Define a tabela a ser consultada
+                .setTable("test")
+                .addColumn("id", "int", new PrimaryKey().addAutoIncrement()).addColumn("teste", "varchar(30)")
+
+                .commitAsync(
+                        t -> System.out.println("executou assincrono"),
+                        err -> System.out.println("Ocorreu erro: " + err.getMessage())
+                );
+
+        //.addColumn("username", "11111")
+        //.addColumn("password", "password");
+
 //		ConnectionManager connectionManager1 = new ConnectionManager("teste1");
 //		connectionManager1.addConnection(new SqliteConnection("connection1", "teste.db"));
 //		
@@ -140,7 +140,7 @@ public class Teste {
 //				.addInnerjoin("table t","u.id=t.id")
 //				.queryResult(User.class);
 //		System.out.println(user.toString());
-		// TODO Auto-generated method stub
+        // TODO Auto-generated method stub
 //     	ConnectionManager.addConnection(new SqliteConnection("sqlite","database"));
 //     	ConnectionManager.addConnection(new SqliteConnection("teste","teste"));
 //    	//ConnectionManager.addConnection(new SqliteConnection("teste","teste"));
@@ -156,7 +156,7 @@ public class Teste {
 //			return;
 //		}
 //		System.out.println(ConnectionManager.getConnectionByName("teste"));
-	
+
 //		
 //		 Class<?> clazz = Ticket.class;
 //
@@ -171,8 +171,7 @@ public class Teste {
 //
 //	            System.out.println(fieldModifiers + " " + fieldType + " " + fieldName);
 //	        }
-	}
-	
-	
+    }
+
 
 }
