@@ -28,26 +28,34 @@ Substitua o REPLACE\_VERSION pela versão que desejar
 
 ## Usando Gradle
 
-### Adicione-o em seu build root.gradle no final dos repositórios
-
-```gradle
-dependencyResolutionManagement {
-		repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-		repositories {
-			mavenCentral()
-			maven { url 'https://jitpack.io' }
-		}
-	}
-```
-
-### Adicionar a dependência
-
 {% hint style="warning" %}
 Substitua o REPLACE\_VERSION pela versão que desejar
 {% endhint %}
 
+### Gradle Groove
+
 ```gradle
+repositories {
+    mavenCentral()
+    maven {
+       url  "https://jitpack.io"
+    }
+}
+
 dependencies {
-	        implementation 'com.github.Jhonatas48:mysql_api_simples:REPLACE_VERSION'
-	}
+    implementation 'com.github.Jhonatas48:mysql_api_simples:REPLACE_VERSION'
+}
+```
+
+### Gradle Kotlin
+
+```gradle
+repositories {
+    mavenCentral()
+    maven("https://jitpack.io")
+}
+
+dependencies {
+    implementation("com.github.Jhonatas48:mysql_api_simples:REPLACE_VERSION")
+}
 ```
