@@ -1,4 +1,4 @@
-package mysql_api;
+package mysql_api.class_test;
 
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;

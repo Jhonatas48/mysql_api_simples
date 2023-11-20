@@ -1,4 +1,4 @@
-package mysql_api;
+package mysql_api.class_test;
 public class LminvitesUser {
     private int id;
     private String discordId;

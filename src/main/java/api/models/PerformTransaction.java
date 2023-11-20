@@ -28,7 +28,7 @@ import api.models.utils.Checkers;
 
 public class PerformTransaction {
 	
-	private static boolean debugEnabled = false;
+	private static boolean debugEnabled = true;
 	private static Exception exception = null;
 	private static final Logger logger = LogManager.getLogger(PerformTransaction.class);
     private ConnectionManager connectionManager = null;
@@ -88,26 +88,26 @@ public class PerformTransaction {
 		System.out.println("Validando conexaomanager: "+connectionManager==null);
 		
 		Checkers.validadeObjectNotNull(connectionManager, "connectionManager");
-		System.out.println("Abrindo conexao");
+		
 		Connection conection = connectionManager.getConnection();
-		System.out.println("Estabeleceu conexao");
+		
 		try {
-			System.out.println("Checkagem pk");
+			;
 			if(!Checkers.isObjectNotNull(create.getPrimaryKey())) {
 				throw new ColumnsIsNullException("The Primakey Key is not defined");
 			}
-			System.out.println("Checkagem campo");
+			
 			if(create.getColums().isEmpty() && create.getPrimaryKey() == null) {
 				throw new NullPointerException("Tables without columns, add columns first");
 				
 			}
 			//System.out.println("SQL: "+SQLBuildManager.buildSQL(ConnectionManager.getConnectionType(),TransactionType.CREATE_TABLE, create));
-			System.out.println("Transação inciada");
+			
 			PreparedStatement preparedStament = conection.prepareStatement(SQLBuildManager.buildSQL(connectionManager.getConnectionType(),TransactionType.CREATE_TABLE, create));
 			printDebbug(preparedStament);
 			preparedStament.execute();
 			 conection.close();
-			 System.out.println("Criado");
+			
 			return true;
 			
 		} catch (SQLException e) {

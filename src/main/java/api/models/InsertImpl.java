@@ -39,7 +39,7 @@ class InsertImpl implements IInsert{
 		    commitAction.setConnectionManager(connectionManager);
 		    
 		   boolean result=  commitAction.commit();
-		   if(failure !=null) {
+		   if(failure !=null && commitAction.getGetErrorException() != null) {
 			   failure.accept(commitAction.getGetErrorException());
 		   }
 		   

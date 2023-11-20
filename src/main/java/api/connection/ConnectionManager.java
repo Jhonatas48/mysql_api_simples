@@ -46,14 +46,14 @@ public class ConnectionManager implements IConnectionManager{
 	}
 
 	private Connection testConnection() throws ConnectionNotEstablishedException {
-		System.out.println("Checkando lista de conexão");
+		
 		if (list.size() == 0) {
 
 			throw new NullPointerException("Not exists database connections register");
 		}
-		System.out.println("--------");
+		
 		Connection connection = null;
-		System.out.println("*****");
+		
 		for (IConnection<?> iConnection : list) {
 
 			connection = iConnection.openConnection();
@@ -74,21 +74,21 @@ public class ConnectionManager implements IConnectionManager{
 			listException.add(iConnection);
 
 		}
-		System.out.println("Checkando principal");
+		
 		if (primaryConnection == null) {
-			System.out.println("000000");
+			
 			throw new ConnectionNotEstablishedException();
 		}
 		
 		if (firstRun) {
-			System.out.println("rodou primeira vez");
+		
 			return connection;
 		}
 
 		logConnection = new SqliteConnection("log",name+"_log");
-		System.out.println("Tabelas");
+		
 		createTablesLogs();
-		System.out.println("Conn");
+		
 		return connection;
 
 	}

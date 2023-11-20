@@ -55,7 +55,7 @@ public class CommitActionImpl extends PerformTransaction implements ICommitActio
 	}
 
 	public CommitActionImpl() {
-		System.out.println("construtor");
+		
 	}
 
 	public void commitAsync(Consumer<Boolean> action, Consumer<Throwable> error) {
@@ -67,9 +67,6 @@ public class CommitActionImpl extends PerformTransaction implements ICommitActio
 			try{
 
 				boolean result = commit(error); // Chama o método de commit síncrono
-
-				System.out.println("Result: "+result);
-				System.out.println("Saiu de supplyAsync");
 
 				action.accept(result);
 
@@ -113,25 +110,25 @@ public class CommitActionImpl extends PerformTransaction implements ICommitActio
 		boolean result = false;
 	    switch (type.toString().toUpperCase()) {
 		case "CREATE_TABLE":
-			System.out.println("CREATE");
+		
 			Create create = new Create();
-			System.out.println("CREATE iniciado");
+			
 			create.setTable(table);
-			System.out.println("Tabela definida");
+		
 			create.setForeignKeys(foreignKeys);
 			create.setPrimaryKey(primaryKey);
 			create.setUniqueKeys(uniqueKeys);
-			System.out.println("Mapeando campos");
+			
 			columns.entrySet().forEach(column->{
 				create.addColumn(column.getKey(), column.getValue().toString());
 			});
-			System.out.println("Checkando conexao");
+			
 			if(connection != null) {
-				System.out.println("inciando tabela");
+			
 				return createTable(SQLBuildManager.buildSQL(connection.getConnectionType(),TransactionType.CREATE_TABLE, create), connection);
 			}
 			result= createTable(create);
-			System.out.println("Result CREATE "+result);
+			
 			break;
 		case "INSERT":
 			Insert insert = new Insert();

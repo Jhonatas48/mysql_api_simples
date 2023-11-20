@@ -19,8 +19,8 @@ public class Insert {
     public void setData(Object... data) {
         this.data = data;
     }
-    public void setData(List<String> data) {
-        this.data =  data.toArray(new String[data.size()]);
+    public void setData(List<Object> data) {
+        this.data =  data.toArray(new Object[data.size()]);
     }
     public void setTable(String table) {
     	

@@ -127,6 +127,7 @@ public class Teste {
                         err -> System.out.println("Ocorreu erro: " + err.getMessage())
                 );
 
+        //new Transaction().select().setTable("product p").addInnerjoin("invoice i","i.productId = p.id");
         //.addColumn("username", "11111")
         //.addColumn("password", "password");
 

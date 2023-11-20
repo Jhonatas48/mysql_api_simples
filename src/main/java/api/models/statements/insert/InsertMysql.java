@@ -1,5 +1,7 @@
 package api.models.statements.insert;
 
+
+
 import api.connection.sqlbuilder.SQLBuildManager;
 import api.models.enums.ConnectionType;
 import api.models.enums.TransactionType;
@@ -33,6 +35,7 @@ public class InsertMysql implements SQLBuild<Insert>{
 		
 		String sql = "Insert into "+objectType.getTable()+"("+objectType.getColumns()+")VALUES("; 
 		
+		
 		int counter =  objectType.getData().length;
 		for (int id=0;id<counter;id++) {
 		
@@ -43,7 +46,7 @@ public class InsertMysql implements SQLBuild<Insert>{
 			}
 		}
              
-		//System.out.println("MYSQL: "+sql);
+		
 		return sql;
 	}
 
