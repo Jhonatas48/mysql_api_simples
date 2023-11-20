@@ -1,6 +1,7 @@
 # Table of contents
 
 * [API Mysql/Sqlite](README.md)
+  * [Instalação](readme/instalacao.md)
   * [Classes](doc/classes/README.md)
     * [ConnectionManager](doc/classes/connectionmanager.md)
     * [IConnection](readme/classes/iconnection.md)
