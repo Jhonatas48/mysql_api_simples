@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 import api.connection.ConnectionManager;
@@ -159,6 +158,26 @@ class SelectImpl extends PerformTransaction implements ISelect {
 		connection.getAsyncManager().getService().submit(()->{
 			try {
 				T object  = queryResult(classz);
+				
+				function.accept(object);
+				
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+			});
+		
+		
+	}
+	
+	@Override
+	public void queryResultAsync(Consumer<Result>function) {
+		
+		Checkers.validadeObjectNotNull(function,"function");
+		
+		
+		connection.getAsyncManager().getService().submit(()->{
+			try {
+				Result object  = queryResult();
 				
 				function.accept(object);
 				

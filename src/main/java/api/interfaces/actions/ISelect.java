@@ -26,6 +26,8 @@ public interface ISelect  extends ISQLParameters<ISelect>{
     
     public <T> void queryResultAsync(Class<T>classz,Consumer<T>function);
     
+    public void queryResultAsync(Consumer<Result>function);
+    
 	public Result queryResult(boolean useLogTransaction);
 	
 	public Exception getException();
