@@ -28,7 +28,7 @@ import api.models.utils.Checkers;
 
 public class PerformTransaction {
 	
-	private static boolean debugEnabled = true;
+	private static boolean debugEnabled = false;
 	private static Exception exception = null;
 	private static final Logger logger = LogManager.getLogger(PerformTransaction.class);
     private ConnectionManager connectionManager = null;
@@ -74,7 +74,7 @@ public class PerformTransaction {
 			
 			preparedStament.execute();
 			connection.close();
-			System.out.println("TABELA CRIADA");
+			//System.out.println("TABELA CRIADA");
 			return true;
 		} catch (SQLException e) {
 			exception = e;

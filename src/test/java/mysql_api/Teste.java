@@ -28,16 +28,16 @@ public class Teste {
         ConnectionManager connectionManager1 = new ConnectionManager("teste1");
         connectionManager1.addConnection(new SqliteConnection("connection1", "teste.db"));
         System.out.println("teste");
-        
-        new Transaction().select().setTable("teste").queryResultAsync(Db.class,new Consumer<Db>() {
-
-			@Override
-			public void accept(Db object) {
-				
-				//usa o objeto do banco de dados
-			}
-        	
-		});
+//        
+//        new Transaction().select().setTable("teste").queryResultAsync(Db.class,new Consumer<Db>() {
+//
+//			@Override
+//			public void accept(Db object) {
+//				
+//				//usa o objeto do banco de dados
+//			}
+//        	
+//		});
 
 
 //		try {
