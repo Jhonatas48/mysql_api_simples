@@ -57,7 +57,7 @@ public class ConnectionManager implements IConnectionManager{
 		for (IConnection<?> iConnection : list) {
 
 			connection = iConnection.openConnection();
-			System.out.println("Loop");
+			
 			if (connection != null) {
 
 				primaryConnection = iConnection;
@@ -130,14 +130,14 @@ public class ConnectionManager implements IConnectionManager{
 	}
 
 	public Connection getConnection() {
-		System.out.println("TESTE");
+		
 		if (primaryConnection != null) {
-			System.out.println("1");
+			
 			Connection connection = primaryConnection.openConnection();
 			if (connection != null) {
 				return connection;
 			}
-			System.out.println("----");
+			
 
 		}
 		try {

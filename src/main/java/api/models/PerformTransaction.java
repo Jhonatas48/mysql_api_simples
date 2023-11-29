@@ -85,7 +85,7 @@ public class PerformTransaction {
 	
 	}
 	public boolean createTable(Create create) {
-		System.out.println("Validando conexaomanager: "+connectionManager==null);
+		
 		
 		Checkers.validadeObjectNotNull(connectionManager, "connectionManager");
 		

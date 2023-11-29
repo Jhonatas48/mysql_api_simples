@@ -4,7 +4,7 @@
 package api.exception.transaction;
 
 /**
- * @author Cristiano TI
+ * @author Jhonatas
  *
  */
 public class TransactionInvalidException extends RuntimeException {

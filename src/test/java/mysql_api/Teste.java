@@ -18,6 +18,7 @@ import api.models.Transaction;
 import api.models.atributes.PrimaryKey;
 import api.models.statements.Result;
 import api.models.statements.Row;
+import mysql_api.class_test.LminvitesUser;
 
 public class Teste {
 
@@ -27,6 +28,16 @@ public class Teste {
         ConnectionManager connectionManager1 = new ConnectionManager("teste1");
         connectionManager1.addConnection(new SqliteConnection("connection1", "teste.db"));
         System.out.println("teste");
+        
+        new Transaction().select().setTable("teste").queryResultAsync(Db.class,new Consumer<Db>() {
+
+			@Override
+			public void accept(Db object) {
+				
+				//usa o objeto do banco de dados
+			}
+        	
+		});
 
 
 //		try {
@@ -92,7 +103,9 @@ public class Teste {
 //	     .addColumn("invitesFakes")
 //	     .addColumn("invitesLeaves")
 //	     .queryResult(LminvitesUser.class);
-//	    
+
+        
+       List<LminvitesUser>a=  new Transaction().select().setConnectionManager(connectionManager1).setTable("teste").queryList(LminvitesUser.class);
 //	     System.out.println("Terminou");
 //////		
 //	     new Transaction().
@@ -120,12 +133,13 @@ public class Teste {
                 .setConnectionManager(connectionManager1)
 //  		//Define a tabela a ser consultada
                 .setTable("test")
-                .addColumn("id", "int", new PrimaryKey().addAutoIncrement()).addColumn("teste", "varchar(30)")
-
-                .commitAsync(
-                        t -> System.out.println("executou assincrono"),
+                .addColumn("id", "integer", new PrimaryKey().addAutoIncrement()).addColumn("teste", "varchar(30)")
+                
+                .commit(
+                    //    t -> System.out.println("executou assincrono"),
                         err -> System.out.println("Ocorreu erro: " + err.getMessage())
                 );
+        	
 
         //new Transaction().select().setTable("product p").addInnerjoin("invoice i","i.productId = p.id");
         //.addColumn("username", "11111")

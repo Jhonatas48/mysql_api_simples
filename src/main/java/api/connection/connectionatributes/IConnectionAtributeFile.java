@@ -8,7 +8,7 @@ import java.io.File;
 import api.interfaces.connection.connectionatributes.IConnectionAtributes;
 
 /**
- * @author Cristiano TI
+ * @author Jhonatas
  *
  */
 public interface IConnectionAtributeFile extends IConnectionAtributes {
