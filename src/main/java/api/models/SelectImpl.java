@@ -8,6 +8,7 @@ import java.util.function.Consumer;
 
 import api.connection.ConnectionManager;
 import api.interfaces.actions.ISelect;
+import api.models.annotations.processor.ForeiKeyProcessor;
 import api.models.statements.Result;
 import api.models.statements.Row;
 import api.models.utils.Checkers;
@@ -139,7 +140,7 @@ class SelectImpl extends PerformTransaction implements ISelect {
 	    for (Row row : result.getRows()) {
 	        try {
 	            T instance = Transformers.instanceOf(clazz, row);
-	            resultList.add(instance);
+	            resultList.add(new ForeiKeyProcessor().process(instance,connection));
 	        } catch (Exception e) {
 	            // Lida com qualquer exceção ocorrida durante a conversão
 	            e.printStackTrace();
@@ -193,7 +194,8 @@ class SelectImpl extends PerformTransaction implements ISelect {
 	@Override
 	public <T> T queryResult(Class<T> clazz) {
 		 Result result = queryResult(false);
-
+		 	
+		 
 		    if (!Checkers.isObjectNotNull(result) || Checkers.isListEmpty(result.getRows())) {
 		        return null;
 		    }
@@ -201,7 +203,8 @@ class SelectImpl extends PerformTransaction implements ISelect {
 		    
 		    try {
 	            T instance = Transformers.instanceOf(clazz,result.getRows().get(0));
-	           return instance;
+	            
+	           return new ForeiKeyProcessor().process(instance,connection);
 	        } catch (Exception e) {
 	            // Lida com qualquer exceção ocorrida durante a conversão
 	            e.printStackTrace();

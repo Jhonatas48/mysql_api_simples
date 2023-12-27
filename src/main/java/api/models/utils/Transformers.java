@@ -51,9 +51,17 @@ public class Transformers {
                                && columnValue instanceof Integer) {
                         int intValue = (int) columnValue;
                         columnValue = intValue == 1;
-                    }
+                    }else if((field.getType().equals(boolean.class) || field.getType().equals(Boolean.class)) 
+                    		&& (columnValue instanceof Boolean || columnValue.toString().equals("false") || columnValue.toString().equals("true") )){
 
-                    field.set(bean, columnValue);
+                    	boolean value = Boolean.parseBoolean(columnValue.toString());
+                    	//columnValue=value;
+                    	field.set(bean, value);
+                    	continue;
+                    }
+                    
+                    field.set(bean,columnValue);
+                   
                 } else {
                     // Campo não encontrado, registrar um aviso ou lançar uma exceção
                     System.out.println("Warning: Field '" + columnName + "' not found in class " + clazz.getName());

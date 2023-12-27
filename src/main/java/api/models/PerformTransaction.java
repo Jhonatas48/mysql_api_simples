@@ -105,8 +105,9 @@ public class PerformTransaction {
 			
 			PreparedStatement preparedStament = conection.prepareStatement(SQLBuildManager.buildSQL(connectionManager.getConnectionType(),TransactionType.CREATE_TABLE, create));
 			printDebbug(preparedStament);
+			
 			preparedStament.execute();
-			 conection.close();
+			preparedStament.close();
 			
 			return true;
 			
@@ -119,7 +120,9 @@ public class PerformTransaction {
 	
 	public boolean tableInsert(String table, String columns, String... data) {
 		Checkers.validadeObjectNotNull(connectionManager, "connectionManager");
+	
 		Connection conection = connectionManager.getConnection();
+		
         String sqldata = "";
         int i = 0;
         for (String d : data) {
@@ -157,8 +160,10 @@ public class PerformTransaction {
     public boolean tableInsert(Insert... builders) {
     	Checkers.validadeObjectNotNull(connectionManager, "connectionManager");
     	String sql = "";
-        
-        Connection conection = connectionManager.getConnection();
+    	//long time = System.currentTimeMillis();
+		Connection conection = connectionManager.getConnection();
+	//	System.out.println("Tempo para conexão: "+(System.currentTimeMillis()-time));
+       // Connection conection = connectionManager.getConnection();
         
         if(builders == null) {
         	
@@ -223,8 +228,10 @@ public class PerformTransaction {
         	
         	 
         	    
-          	return stmt.executeUpdate() > 0;
-          		
+          	boolean value= stmt.executeUpdate() > 0;
+          	stmt.close();
+          
+          	return value;
 
         } catch (SQLException e) {
         	exception = e;
@@ -411,6 +418,7 @@ public class PerformTransaction {
         sql = sql + ";";
         Statement stmt;
         ResultSet res;
+    
         try {
             stmt = connection.createStatement();
             res = stmt.executeQuery(sql);

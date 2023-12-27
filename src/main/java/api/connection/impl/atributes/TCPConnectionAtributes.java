@@ -14,7 +14,7 @@ public abstract class  TCPConnectionAtributes implements ITCPConnecction {
 	
 	public String getAtributesConnectionTCP() {
 		String atributes = "://"+getAdress()+":"+getPort()+"/"+getDatabase(); 
-		return isUseSSL()?atributes:atributes+"?useSSL=true";
+		return !isUseSSL()? atributes+"?characterEncoding=utf8&useConfigs=maxPerformance":atributes+"?useSSL=true&tcpKeepAlive=true&characterEncoding=utf8&useConfigs=maxPerformance";
 	}
 	
 	@Override

@@ -13,6 +13,7 @@ import api.models.utils.Checkers;
 public class MysqlConnection extends TCPConnectionAtributes implements IConnection<TCPConnectionAtributes>{
 
 	private String name;
+	private Connection connection;
 	public MysqlConnection(String name) {
 		Checkers.validateStringNotNull(name, "name");
 		this.name = name;
@@ -46,10 +47,18 @@ public class MysqlConnection extends TCPConnectionAtributes implements IConnecti
 			
 			throw new NullPointerException("Database is null");
 		}
-		
+		try {
+			if(connection != null && !connection.isClosed()) {
+				return this.connection;
+			}
+		} catch (SQLException e) {
+			connection=null;
+			
+		}
 		Connection connection=null;
 			try {
 				connection = DriverManager.getConnection(getAtributesConnection(),getUsername(),getPassword());
+				this.connection=connection;
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				//e.printStackTrace();

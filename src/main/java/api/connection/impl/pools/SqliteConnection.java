@@ -13,6 +13,7 @@ import api.models.utils.Checkers;
 public class SqliteConnection extends ConnectionAtributesFiles implements IConnection<ConnectionAtributesFiles>{
 	
 	private String name;
+	Connection connection;
 	public SqliteConnection(String nameConnection , String nameFile) {
 		Checkers.validateStringNotNull(nameConnection, "nameConnection");
 		Checkers.validateStringNotNull(nameFile, "nameFile");
@@ -35,7 +36,15 @@ public class SqliteConnection extends ConnectionAtributesFiles implements IConne
 	public Connection openConnection() {
 		
 		Connection connection=null;
-		
+		try {
+			if(this.connection != null && connection.isClosed()) {
+				return this.connection;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+			this.connection=null;
+		}
 		try {
 			
 			//Class.forName("org.sqlite.JDBC");

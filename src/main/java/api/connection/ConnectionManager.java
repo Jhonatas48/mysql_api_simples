@@ -1,6 +1,12 @@
 package api.connection;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -243,5 +249,59 @@ public class ConnectionManager implements IConnectionManager{
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	public List<String>getTables(){
+		Connection connection = getConnection();
+		DatabaseMetaData metaData;
+		try {
+			metaData = connection.getMetaData();
+			String[] types = {"TABLE"};
+	       
+	        // Obter as tabelas do banco de dados
+	         ResultSet resultSet = metaData.getTables(connection.getCatalog(),null, "%", types);
+	         
+	         List<String>tables = new ArrayList<String>();
+	        // Iterar sobre o ResultSet e imprimir o nome de cada tabela
+	        while (resultSet.next()) {
+	            String tableName = resultSet.getString("TABLE_NAME");
+	            
+	            tables.add(tableName);
+	        }
+	        return tables;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+		return null;
+	}
+	
+	
+	public List<String>getTableFields(String table){
+		Checkers.validateStringNotNull(table, "table");
+		Connection connection = getConnection();
+		
+		 String  query = "SELECT * FROM " + table + " WHERE 1=0";
 
+         try (PreparedStatement statement = connection.prepareStatement(query);
+              ResultSet resultSet = statement.executeQuery(query)) {
+
+             ResultSetMetaData metaData = resultSet.getMetaData();
+
+             // Obtendo o número de colunas (campos) na tabela
+             int numberColumns = metaData.getColumnCount();
+             List<String>columns = new ArrayList<String>();
+             // Iterando sobre as colunas e obtendo os nomes
+             for (int i = 1; i <= numberColumns; i++) {
+                 String nameColumn = metaData.getColumnName(i);
+                 columns.add(nameColumn);
+             }
+             return columns;
+         }
+      catch (Exception e) {
+         e.printStackTrace();
+     }
+		return null;
+		
+	}
 }
