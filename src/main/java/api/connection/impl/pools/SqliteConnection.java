@@ -37,7 +37,7 @@ public class SqliteConnection extends ConnectionAtributesFiles implements IConne
 		
 		Connection connection=null;
 		try {
-			if(this.connection != null && connection.isClosed()) {
+			if(this.connection != null && !connection.isClosed()) {
 				return this.connection;
 			}
 		} catch (SQLException e) {

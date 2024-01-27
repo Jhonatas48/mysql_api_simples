@@ -284,7 +284,7 @@ public class ConnectionManager implements IConnectionManager{
 		 String  query = "SELECT * FROM " + table + " WHERE 1=0";
 
          try (PreparedStatement statement = connection.prepareStatement(query);
-              ResultSet resultSet = statement.executeQuery(query)) {
+              ResultSet resultSet = statement.executeQuery()) {
 
              ResultSetMetaData metaData = resultSet.getMetaData();
 
@@ -298,6 +298,7 @@ public class ConnectionManager implements IConnectionManager{
              }
              return columns;
          }
+		 
       catch (Exception e) {
          e.printStackTrace();
      }
