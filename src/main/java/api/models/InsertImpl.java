@@ -46,6 +46,21 @@ class InsertImpl implements IInsert{
 		return result;
 	}
 	@Override
+	public void commitAsync(Consumer<Boolean> action,Consumer<Throwable> failure) {
+		 CommitActionImpl commitAction = new CommitActionImpl();
+		    commitAction.setTable(table);
+		    commitAction.setType(TransactionType.INSERT);
+		    commitAction.setColumns(columns);
+		    commitAction.setConnectionManager(connectionManager);	    
+		    commitAction.commitAsync(action,failure);
+	}
+	
+	@Override
+	public void commitAsync(Consumer<Boolean> action) {
+		this.commitAsync(action, null);
+	}
+	
+	@Override
 	public IInsert setConnectionManager(ConnectionManager connection) {
 		Checkers.validadeObjectNotNull(connection, "connectionManager");
 		this.connectionManager = connection;
