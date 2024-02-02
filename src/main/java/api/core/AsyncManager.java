@@ -15,7 +15,6 @@ import api.models.utils.Checkers;
 
 public class AsyncManager {
 
-<<<<<<< Updated upstream
     private final ScheduledExecutorService service;
     private Queue<Runnable>transactions = new LinkedList<Runnable>();
     private final CountDownLatch latch = new CountDownLatch(1);
@@ -30,28 +29,6 @@ public class AsyncManager {
         	}
         	
         },0,30,TimeUnit.MILLISECONDS);
-=======
-	private final ScheduledExecutorService service;
-    private final Queue<Runnable> transactions = new LinkedList<Runnable>();
-
-    public AsyncManager(int threads) {
-
-        service = Executors.newScheduledThreadPool(threads, (runnable) -> {
-            Thread thread = new Thread(runnable);
-            thread.setDaemon(false);
-            return thread;
-        });
-
-        service.scheduleAtFixedRate(() -> {
-
-            Runnable runnable = transactions.poll();
-
-            if (Checkers.isObjectNotNull(runnable)) {
-                runnable.run();
-            }
-
-        }, 0, 16, TimeUnit.MILLISECONDS);
->>>>>>> Stashed changes
     }
     
     public void addTransaction(Runnable runnable) {
@@ -59,7 +36,6 @@ public class AsyncManager {
     	transactions.add(runnable);
     }
     public void shutdown() {
-<<<<<<< Updated upstream
 //        // Aguarda até que todas as transações sejam processadas ou até que o tempo limite seja atingido
 //        try {
 //            latch.await();
@@ -80,56 +56,6 @@ public class AsyncManager {
 		}
     	
        
-=======
-
-        service.shutdown();
-        HashSet<Runnable> pedingTaks = new HashSet<>();
-        try {
-
-            boolean finish = service.awaitTermination(30, TimeUnit.SECONDS);
-
-            if (!finish) {
-
-                System.out.println("Serviço não finalizou a tempo.");
-                pedingTaks.addAll(service.shutdownNow());
-
-                finish = service.awaitTermination(30, TimeUnit.SECONDS);
-                if(!finish)
-                    System.out.println("Serviço não foi finalizado.");
-
-            }
-
-        } catch (InterruptedException e) {
-            pedingTaks.addAll(service.shutdownNow());
-        }
-
-        // executa alguma task pendente
-        if(!pedingTaks.isEmpty()) {
-
-            System.out.println("Existem " + pedingTaks.size() + " tasks pendentes no serviço. Executando...");
-
-            for(Runnable runnable : pedingTaks){
-                runnable.run();
-            }
-
-            pedingTaks.clear();
-        }
-        // executa alguma task pendente
-
-        // processa a fila de transações
-        if (!transactions.isEmpty()) {
-
-            System.out.println("Existem " + transactions.size() + " transações pendentes no serviço. Executando...");
-
-            Runnable runnable;
-            while ((runnable = transactions.poll()) != null) {
-                runnable.run();
-            }
-
-        }
-        // processa a fila de transações
-
->>>>>>> Stashed changes
     }
 
     public void setLatch() {
