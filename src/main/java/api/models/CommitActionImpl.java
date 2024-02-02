@@ -62,8 +62,8 @@ public class CommitActionImpl extends PerformTransaction implements ICommitActio
 
 		Checkers.validadeObjectNotNull(action, "action");
 
-		manager.getAsyncManager().getService().submit(() -> {
-
+		manager.getAsyncManager().addTransaction(() -> {
+			
 			try{
 
 				boolean result = commit(error); // Chama o método de commit síncrono

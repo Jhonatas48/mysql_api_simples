@@ -559,7 +559,7 @@ public class PerformTransaction {
 			}
 			
 			preparedStatement.close();
-			connection.close();
+			//connection.close();
 			
 			
 		} catch (SQLException e) {

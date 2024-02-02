@@ -44,8 +44,6 @@ public class ConnectionManager implements IConnectionManager{
 	private List<IConnection<?>> list = new ArrayList<>();
 	private List<IConnection<?>> listException = new ArrayList<>();
 	
-	
-
 	public ConnectionManager(String name) {
 	    Checkers.validateStringNotNull(name,"name");
 		this.name = name;
@@ -304,5 +302,13 @@ public class ConnectionManager implements IConnectionManager{
      }
 		return null;
 		
+	}
+	
+	public void shutdown() {
+		  // Espera até que a lista de transações esteja vazia
+        asyncManager.setLatch();
+        
+        // Encerra o programa
+        asyncManager.shutdown();
 	}
 }

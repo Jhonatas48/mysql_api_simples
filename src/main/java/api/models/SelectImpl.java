@@ -114,7 +114,7 @@ class SelectImpl extends PerformTransaction implements ISelect {
 		Checkers.validadeObjectNotNull(clazz,"clazz");
 //			Checkers.validadeObjectNotNull(action, "action");
 
-		connection.getAsyncManager().getService().submit(()->{
+		connection.getAsyncManager().addTransaction(()->{
 			try {
 				List<T>list = queryList(clazz);
 				
@@ -156,7 +156,7 @@ class SelectImpl extends PerformTransaction implements ISelect {
 		Checkers.validadeObjectNotNull(function,"function");
 		Checkers.validadeObjectNotNull(classz,"classz");
 		
-		connection.getAsyncManager().getService().submit(()->{
+		connection.getAsyncManager().addTransaction(()->{
 			try {
 				T object  = queryResult(classz);
 				
@@ -176,7 +176,7 @@ class SelectImpl extends PerformTransaction implements ISelect {
 		Checkers.validadeObjectNotNull(function,"function");
 		
 		
-		connection.getAsyncManager().getService().submit(()->{
+		connection.getAsyncManager().addTransaction(()->{
 			try {
 				Result object  = queryResult();
 				
