@@ -16,3 +16,23 @@ jobs:
         run: mvn --batch-mode deploy
         env:
            GITHUB_TOKEN: ${{ secrets.JAVA_TOKEN }}
+		   
+      - name: Build with Maven
+        run: mvn package
+      
+      - name: Get version from pom.xml
+        id: get_version
+        run: echo ::set-output name=version::$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: target/*.jar
+          token: ${{ secrets.JAVA_TOKEN }}
+          tag_name: v${{ steps.get_version.outputs.version }}
+          release_name: Release ${{ steps.get_version.outputs.version }}
+          body: |
+            ${{ github.event.head_commit.message }}
+          draft: false
+          prerelease: false
