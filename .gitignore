@@ -1,4 +1,6 @@
 
 settings.xml
 target/surefire-reports/mysql_api.Teste.txt
+target/
+plugins/teste
 *.db
