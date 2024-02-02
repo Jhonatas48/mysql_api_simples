@@ -16,10 +16,12 @@ jobs:
         run: mvn --batch-mode deploy
         env:
            GITHUB_TOKEN: ${{ secrets.JAVA_TOKEN }}		   
-      - name: Build with Maven
+      - name: Build and Publish package
         run: |
           mvn --batch-mode deploy
           mvn package
+        env:
+          GITHUB_TOKEN: ${{ secrets.JAVA_TOKEN }}
       - name: Get version from pom.xml
         id: get_version
         run: echo ::set-output name=version::$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
