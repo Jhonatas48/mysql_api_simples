@@ -40,7 +40,7 @@ public class AsyncManager {
                 runnable.run();
             }
 
-        }, 0, 30, TimeUnit.MILLISECONDS);
+        }, 0, 16, TimeUnit.MILLISECONDS);
     }
 
     public void addTransaction(Runnable runnable) {
