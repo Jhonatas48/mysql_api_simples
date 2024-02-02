@@ -16,5 +16,6 @@ public interface IConnectionManager {
 	public IConnection<?> getConnectionByName(String name);
 	public void closeConnection();
 	public List<String>getTables();
+	public void shutdown();
 	
 }

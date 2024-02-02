@@ -305,8 +305,6 @@ public class ConnectionManager implements IConnectionManager{
 	}
 	
 	public void shutdown() {
-		  // Espera até que a lista de transações esteja vazia
-        asyncManager.setLatch();
         
         // Encerra o programa
         asyncManager.shutdown();
