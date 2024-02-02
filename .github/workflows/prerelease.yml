@@ -33,7 +33,7 @@ jobs:
       uses: softprops/action-gh-release@v1
       with:
         files: target/*.jar
-        token: ${{ secrets.TOKEN }}
+        token: ${{ secrets.JAVA_TOKEN }}
         tag_name: staging-${{ steps.short_sha.outputs.sha }}
         release_name: pre-release ${{ steps.short_sha.outputs.sha }}
         body: |
