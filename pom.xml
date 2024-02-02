@@ -2,7 +2,11 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.github.jhonatas48</groupId>
   <artifactId>api-mysql</artifactId>
+<<<<<<< Updated upstream
   <version>0.2.0.6.4.3</version>
+=======
+  <version>0.2.0.6.5</version>
+>>>>>>> Stashed changes
   <packaging>jar</packaging>
   
   <distributionManagement> 
