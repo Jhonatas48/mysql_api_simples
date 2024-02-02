@@ -28,7 +28,7 @@ public class MainStress {
                 );
         System.out.println(connectionManager1.getTableFields("test"));
         long time = System.currentTimeMillis();
-        for(int c=0;c<1000;c++) {
+        for(int c=0;c<350;c++) {
         	new Transaction().insert()
         	 .setConnectionManager(connectionManager1)
         	.setTable("test").addColumn("teste","teste "+c).commitAsync(b->{
@@ -39,6 +39,19 @@ public class MainStress {
         	new Transaction().update().setTable("test")
        	 .setConnectionManager(connectionManager1)
        	 .addColumn("teste","teste").filter("id="+c).commitAsync(a->{},e->{
+       		 e.printStackTrace();
+       	 });
+           
+        }
+        for(int c=0;c<250;c++) {
+        	new Transaction().insert()
+        	 .setConnectionManager(connectionManager1)
+        	.setTable("test").addColumn("teste","teste "+c).commit(e->{
+          		 e.printStackTrace();
+          	 });
+        	new Transaction().update().setTable("test")
+       	 .setConnectionManager(connectionManager1)
+       	 .addColumn("teste","teste").filter("id="+c).commit(e->{
        		 e.printStackTrace();
        	 });
            
