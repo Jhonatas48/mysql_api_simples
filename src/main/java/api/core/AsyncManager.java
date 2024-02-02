@@ -18,6 +18,7 @@ public class AsyncManager {
 
 	private final ScheduledExecutorService service;
     private final Queue<Runnable> transactions = new LinkedList<Runnable>();
+    private boolean shutdown=false;
 
     public AsyncManager(int threads) {
 
@@ -28,7 +29,11 @@ public class AsyncManager {
         });
 
         service.scheduleAtFixedRate(() -> {
-
+        	if(shutdown) {
+        		service.shutdown();
+        		return;
+        	}
+        	
             Runnable runnable = transactions.poll();
 
             if (Checkers.isObjectNotNull(runnable)) {
@@ -43,39 +48,56 @@ public class AsyncManager {
     }
 
     public void shutdown() {
-
+    	this.shutdown=true;
         service.shutdown();
-        HashSet<Runnable> pedingTaks = new HashSet<>();
         try {
+			Thread.sleep(40);
+		    if (!transactions.isEmpty()) {
 
-            boolean finish = service.awaitTermination(30, TimeUnit.SECONDS);
+	            System.out.println("Existem " + transactions.size() + " transações pendentes no serviço. Executando...");
 
-            if (!finish) {
+	            Runnable runnable;
+	            while ((runnable = transactions.poll()) != null) {
+	                runnable.run();
+	            }
 
-                System.out.println("Serviço não finalizou a tempo.");
-                pedingTaks.addAll(service.shutdownNow());
-
-                finish = service.awaitTermination(30, TimeUnit.SECONDS);
-                if(!finish)
-                    System.out.println("Serviço não foi finalizado.");
-
-            }
-
-        } catch (InterruptedException e) {
-            pedingTaks.addAll(service.shutdownNow());
-        }
-
-        // executa alguma task pendente
-        if(!pedingTaks.isEmpty()) {
-
-            System.out.println("Existem " + pedingTaks.size() + " tasks pendentes no serviço. Executando...");
-
-            for(Runnable runnable : pedingTaks){
-                runnable.run();
-            }
-
-            pedingTaks.clear();
-        }
+	        }
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+//        HashSet<Runnable> pedingTaks = new HashSet<>();
+//        try {
+//
+//            boolean finish = service.awaitTermination(30, TimeUnit.SECONDS);
+//
+//            if (!finish) {
+//
+//                System.out.println("Serviço não finalizou a tempo.");
+//                pedingTaks.addAll(service.shutdownNow());
+//
+//                finish = service.awaitTermination(30, TimeUnit.SECONDS);
+//                if(!finish)
+//                    System.out.println("Serviço não foi finalizado.");
+//
+//            }
+//
+//        } catch (InterruptedException e) {
+//            pedingTaks.addAll(service.shutdownNow());
+//        }
+//
+//        // executa alguma task pendente
+//        if(!pedingTaks.isEmpty()) {
+//
+//            System.out.println("Existem " + pedingTaks.size() + " tasks pendentes no serviço. Executando...");
+//
+//            for(Runnable runnable : pedingTaks){
+//                runnable.run();
+//            }
+//
+//            pedingTaks.clear();
+//        }
         // executa alguma task pendente
 
         // processa a fila de transações
