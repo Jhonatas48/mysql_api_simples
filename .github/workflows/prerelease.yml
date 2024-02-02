@@ -38,6 +38,6 @@ jobs:
         release_name: pre-release ${{ steps.short_sha.outputs.sha }}
         body: |
           This is an automatic pre-release build of commit ${{ github.sha }}
-          With this release you can test ahead of time the next ZC-Bot release candidate
+          With this release you can test ahead of time the next mysql_api release candidate
         draft: false
         prerelease: true
