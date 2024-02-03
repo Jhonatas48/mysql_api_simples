@@ -6,7 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -305,8 +304,6 @@ public class ConnectionManager implements IConnectionManager{
 	}
 	
 	public void shutdown() {
-		  // Espera até que a lista de transações esteja vazia
-        asyncManager.setLatch();
         
         // Encerra o programa
         asyncManager.shutdown();
