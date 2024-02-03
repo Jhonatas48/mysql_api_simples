@@ -1,7 +1,20 @@
-
 settings.xml
 target/surefire-reports/mysql_api.Teste.txt
 target/
 plugins/teste
 *.db
 .github/workflows
+syntax: glob
+target/**
+classes/**
+checkouts/**
+profiles.clj
+pom.xml
+pom.xml.asc
+*.jar
+*.class
+/.lein-*
+/.nrepl-port
+/.prepl-port
+.gitignore
+.git/**
