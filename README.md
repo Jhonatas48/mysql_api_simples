@@ -24,6 +24,6 @@ Após isso use a versão desejada conforme exemplo:
   <groupId>com.github.jhonatas48</groupId>
   <artifactId>api-mysql</artifactId>
   <!--Substitua esse campo pela versão desejada-->
-  <version>0.0.2.0.5.0</version>
+  <version>0.2.0.7</version>
 </dependency>
 ```
