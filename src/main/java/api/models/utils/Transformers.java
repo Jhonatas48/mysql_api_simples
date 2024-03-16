@@ -103,8 +103,12 @@ public class Transformers {
         DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         DateTimeFormatter formatter3 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         DateTimeFormatter formatter4 = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        DateTimeFormatter formatter5 = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSS");
         try {
-            if (value.length() == 19) {
+        	if(value.length() == 29) {
+       		 return LocalDateTime.parse(value, formatter5);
+       	}
+       	else if (value.length() == 19) {
                 return LocalDateTime.parse(value, formatter1);
             } else if (value.length() == 16) {
                 return LocalDateTime.parse(value, formatter2);

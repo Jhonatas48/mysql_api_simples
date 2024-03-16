@@ -30,7 +30,7 @@ public class SqliteConnection extends ConnectionAtributesFiles implements IConne
 	@Override
 	public String getAtributesConnection() {
 		
-		return "jdbc:sqlite"+getAtributesConnectionFiles();
+		return "jdbc:sqlite"+getAtributesConnectionFiles()+"?journal_mode=WAL";
 	}
 	@Override
 	public Connection openConnection() {
