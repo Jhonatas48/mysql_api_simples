@@ -463,13 +463,12 @@ public class PerformTransaction {
     }
    
     private boolean registerTransactionLog(final String sql, final List<Object>list,final TransactionType transactionType) {
+		if (connectionManager.disableLogs) {
+			return true;
+		}
     	Checkers.validadeObjectNotNull(connectionManager, "connectionManager");
     	Checkers.isNotEmpty(sql);
     	Checkers.validadeObjectNotNull(transactionType,"TransactionType");
-
-		if (connectionManager.disableLog) {
-			return true;
-		}
     	
     	if(transactionType != TransactionType.DELETE) {
     	

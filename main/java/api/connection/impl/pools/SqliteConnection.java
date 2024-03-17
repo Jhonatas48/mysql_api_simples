@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 
 import api.connection.impl.atributes.ConnectionAtributesFiles;
 import api.interfaces.connection.IConnection;
@@ -17,6 +18,7 @@ public class SqliteConnection extends ConnectionAtributesFiles implements IConne
 	public SqliteConnection(String nameConnection , String nameFile) {
 		Checkers.validateStringNotNull(nameConnection, "nameConnection");
 		Checkers.validateStringNotNull(nameFile, "nameFile");
+		this.name = nameConnection;
 		this.setNameFile(nameFile);
 	}
 	

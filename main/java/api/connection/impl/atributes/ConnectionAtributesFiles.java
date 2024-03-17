@@ -2,6 +2,7 @@ package api.connection.impl.atributes;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
 import api.connection.connectionatributes.IConnectionAtributeFile;
 
@@ -57,8 +58,7 @@ public abstract class ConnectionAtributesFiles implements IConnectionAtributeFil
 
 	@Override
 	public void setNameFile(String name) {
-
-		nameFile= new File(name).getName().split("\\.")[0] + ".db";
+		this.nameFile = new File(name).getName().split("\\.")[0] + ".db";
 	}
 	
 	@Override
