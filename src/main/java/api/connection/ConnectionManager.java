@@ -42,17 +42,10 @@ public class ConnectionManager implements IConnectionManager{
 
 	private List<IConnection<?>> list = new ArrayList<>();
 	private List<IConnection<?>> listException = new ArrayList<>();
-
-	public boolean disableLog = false;
 	
 	public ConnectionManager(String name) {
-	    this(name,false);
-	}
-
-	public ConnectionManager(String name, boolean disableLog) {
-		Checkers.validateStringNotNull(name,"name");
+	    Checkers.validateStringNotNull(name,"name");
 		this.name = name;
-		this.disableLog = disableLog;
 	}
 
 	private Connection testConnection() throws ConnectionNotEstablishedException {
@@ -97,7 +90,7 @@ public class ConnectionManager implements IConnectionManager{
 
 		logConnection = new SqliteConnection("log",name+"_log");
 		
-		if (!disableLog) createTablesLogs();
+		createTablesLogs();
 		
 		return connection;
 
