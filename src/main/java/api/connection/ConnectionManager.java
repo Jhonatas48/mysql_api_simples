@@ -43,31 +43,31 @@ public class ConnectionManager implements IConnectionManager{
 	private List<IConnection<?>> list = new ArrayList<>();
 	private List<IConnection<?>> listException = new ArrayList<>();
 
-	public boolean disableLog = false;
-	
+	public boolean disableLog;
+
 	public ConnectionManager(String name) {
-	    this(name,false);
+		this(name,false);
 	}
 
-	public ConnectionManager(String name, boolean disableLog) {
+	public ConnectionManager(String name, boolean isDisabled) {
 		Checkers.validateStringNotNull(name,"name");
+		this.disableLog = isDisabled;
 		this.name = name;
-		this.disableLog = disableLog;
 	}
 
 	private Connection testConnection() throws ConnectionNotEstablishedException {
-		
+
 		if (list.size() == 0) {
 
 			throw new NullPointerException("Not exists database connections register");
 		}
-		
+
 		Connection connection = null;
-		
+
 		for (IConnection<?> iConnection : list) {
 
 			connection = iConnection.openConnection();
-			
+
 			if (connection != null) {
 
 				primaryConnection = iConnection;
@@ -84,21 +84,21 @@ public class ConnectionManager implements IConnectionManager{
 			listException.add(iConnection);
 
 		}
-		
+
 		if (primaryConnection == null) {
-			
+
 			throw new ConnectionNotEstablishedException();
 		}
-		
+
 		if (firstRun) {
-		
+
 			return connection;
 		}
 
 		logConnection = new SqliteConnection("log",name+"_log");
-		
+
 		if (!disableLog) createTablesLogs();
-		
+
 		return connection;
 
 	}
@@ -135,19 +135,19 @@ public class ConnectionManager implements IConnectionManager{
 		// \"id\" INTEGER,\"transactionId\" INTEGER,\"milliseconds\" REAL,PRIMARY
 		// KEY(\"id\" AUTOINCREMENT),FOREIGN KEY(\"transactionId\") REFERENCES
 		// \"transactions\"(\"id\"))",logConnection);
-	
+
 
 	}
 
 	public Connection getConnection() {
-		
+
 		if (primaryConnection != null) {
-			
+
 			Connection connection = primaryConnection.openConnection();
 			if (connection != null) {
 				return connection;
 			}
-			
+
 
 		}
 		try {
@@ -162,7 +162,7 @@ public class ConnectionManager implements IConnectionManager{
 		return primaryConnection.openConnection();
 	}
 
-	
+
 	public IConnection<?> getConnectionByName(String name) {
 		Checkers.validateStringNotNull(name, "name");
 		if (list.size() == 0) {
@@ -170,20 +170,20 @@ public class ConnectionManager implements IConnectionManager{
 			throw new NullPointerException("Not exists database connections register");
 		}
 		try {
-		
+
 			Optional<IConnection<?>>Iconnection = list.stream().filter(
 					connectionObj -> connectionObj.getName().toLowerCase().equalsIgnoreCase(name)
-					).findFirst();
+			).findFirst();
 			return Iconnection.get();
-		
+
 		}catch (Exception e) {
-		
-			 if(!e.getMessage().equals("No value present")) {
-	    		  e.printStackTrace();
-	    	  }
+
+			if(!e.getMessage().equals("No value present")) {
+				e.printStackTrace();
+			}
 			return null;
 		}
-		
+
 	}
 
 	public void closeConnection() {
@@ -194,38 +194,38 @@ public class ConnectionManager implements IConnectionManager{
 	}
 
 	public void addConnection(IConnection<?> connection) {
-		
-      Checkers.validadeObjectNotNull(connection,"connection");
-      try {
-    	  Optional<IConnection<?>>Iconnection = list.stream().filter(
-  				connectionObj -> connectionObj.getName().toLowerCase().equalsIgnoreCase(connection.getName())
-  				).findFirst();
-  		
-  		Iconnection.get();
-  		throw new DuplicateConnectionNameException();
-  		 
-      }catch (Exception e) {
-    	  
-    	  if(!e.getMessage().equals("No value present")) {
-    		  e.printStackTrace();
-    		  return;
-    	  }
-    	 
-		 
-	}
-		
+
+		Checkers.validadeObjectNotNull(connection,"connection");
+		try {
+			Optional<IConnection<?>>Iconnection = list.stream().filter(
+					connectionObj -> connectionObj.getName().toLowerCase().equalsIgnoreCase(connection.getName())
+			).findFirst();
+
+			Iconnection.get();
+			throw new DuplicateConnectionNameException();
+
+		}catch (Exception e) {
+
+			if(!e.getMessage().equals("No value present")) {
+				e.printStackTrace();
+				return;
+			}
+
+
+		}
+
 		list.add(connection);
 
 	}
 
 	public void removeConnection(String connectionName) {
-         Checkers.validateStringNotNull(connectionName, "connectionName");
+		Checkers.validateStringNotNull(connectionName, "connectionName");
 		if (list.size() == 0) {
 			return;
 		}
 
 		list.removeIf(connection -> connection.getName().equals(connectionName.toLowerCase()));
-		
+
 	}
 
 	public ConnectionType getConnectionType() {
@@ -253,66 +253,66 @@ public class ConnectionManager implements IConnectionManager{
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public List<String>getTables(){
 		Connection connection = getConnection();
 		DatabaseMetaData metaData;
 		try {
 			metaData = connection.getMetaData();
 			String[] types = {"TABLE"};
-	       
-	        // Obter as tabelas do banco de dados
-	         ResultSet resultSet = metaData.getTables(connection.getCatalog(),null, "%", types);
-	         
-	         List<String>tables = new ArrayList<String>();
-	        // Iterar sobre o ResultSet e imprimir o nome de cada tabela
-	        while (resultSet.next()) {
-	            String tableName = resultSet.getString("TABLE_NAME");
-	            
-	            tables.add(tableName);
-	        }
-	        return tables;
+
+			// Obter as tabelas do banco de dados
+			ResultSet resultSet = metaData.getTables(connection.getCatalog(),null, "%", types);
+
+			List<String>tables = new ArrayList<String>();
+			// Iterar sobre o ResultSet e imprimir o nome de cada tabela
+			while (resultSet.next()) {
+				String tableName = resultSet.getString("TABLE_NAME");
+
+				tables.add(tableName);
+			}
+			return tables;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        
+
 		return null;
 	}
-	
-	
+
+
 	public List<String>getTableFields(String table){
 		Checkers.validateStringNotNull(table, "table");
 		Connection connection = getConnection();
-		
-		 String  query = "SELECT * FROM " + table + " WHERE 1=0";
 
-         try (PreparedStatement statement = connection.prepareStatement(query);
-              ResultSet resultSet = statement.executeQuery()) {
+		String  query = "SELECT * FROM " + table + " WHERE 1=0";
 
-             ResultSetMetaData metaData = resultSet.getMetaData();
+		try (PreparedStatement statement = connection.prepareStatement(query);
+			 ResultSet resultSet = statement.executeQuery()) {
 
-             // Obtendo o número de colunas (campos) na tabela
-             int numberColumns = metaData.getColumnCount();
-             List<String>columns = new ArrayList<String>();
-             // Iterando sobre as colunas e obtendo os nomes
-             for (int i = 1; i <= numberColumns; i++) {
-                 String nameColumn = metaData.getColumnName(i);
-                 columns.add(nameColumn);
-             }
-             return columns;
-         }
-		 
-      catch (Exception e) {
-         e.printStackTrace();
-     }
+			ResultSetMetaData metaData = resultSet.getMetaData();
+
+			// Obtendo o número de colunas (campos) na tabela
+			int numberColumns = metaData.getColumnCount();
+			List<String>columns = new ArrayList<String>();
+			// Iterando sobre as colunas e obtendo os nomes
+			for (int i = 1; i <= numberColumns; i++) {
+				String nameColumn = metaData.getColumnName(i);
+				columns.add(nameColumn);
+			}
+			return columns;
+		}
+
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 		return null;
-		
+
 	}
-	
+
 	public void shutdown() {
-        
-        // Encerra o programa
-        asyncManager.shutdown();
+
+		// Encerra o programa
+		asyncManager.shutdown();
 	}
 }
