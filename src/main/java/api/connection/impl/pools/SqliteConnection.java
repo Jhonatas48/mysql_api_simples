@@ -11,7 +11,7 @@ import api.models.enums.ConnectionType;
 import api.models.utils.Checkers;
 
 public class SqliteConnection extends ConnectionAtributesFiles implements IConnection<ConnectionAtributesFiles>{
-	
+
 	private String name;
 	Connection connection;
 	public SqliteConnection(String nameConnection , String nameFile) {
@@ -19,22 +19,22 @@ public class SqliteConnection extends ConnectionAtributesFiles implements IConne
 		Checkers.validateStringNotNull(nameFile, "nameFile");
 		this.name = nameConnection;
 		String[] nameWiExtension = nameFile.split("\\.");
-		
+
 		if(nameWiExtension.length < 2) {
 			this.setNameFile(nameFile+".db");
 			return;
 		}
 		this.setNameFile(nameWiExtension[0]+".db");
 	}
-	
+
 	@Override
 	public String getAtributesConnection() {
-		
+
 		return "jdbc:sqlite"+getAtributesConnectionFiles()+"?journal_mode=WAL";
 	}
 	@Override
 	public Connection openConnection() {
-		
+
 		Connection connection=null;
 		try {
 			if(this.connection != null && !connection.isClosed()) {
@@ -46,13 +46,13 @@ public class SqliteConnection extends ConnectionAtributesFiles implements IConne
 			this.connection=null;
 		}
 		try {
-			
+
 			//Class.forName("org.sqlite.JDBC");
-			
+
 			connection = DriverManager.getConnection(getAtributesConnection());
-			
+
 		} catch (SQLException  e) {
-			
+
 			e.printStackTrace();
 		}
 		return connection;
@@ -60,13 +60,13 @@ public class SqliteConnection extends ConnectionAtributesFiles implements IConne
 
 	@Override
 	public void closeConnection(Connection connection) {
-		
+
 		if(connection != null) {
-			
+
 			try {
 				connection.close();
 			} catch (SQLException e) {
-				
+
 				e.printStackTrace();
 			}
 		}
@@ -74,7 +74,7 @@ public class SqliteConnection extends ConnectionAtributesFiles implements IConne
 
 	@Override
 	public void closeResultSet(ResultSet resultSet) {
-	
+
 		if(resultSet != null) {
 			try {
 				resultSet.close();
@@ -84,25 +84,25 @@ public class SqliteConnection extends ConnectionAtributesFiles implements IConne
 			}
 		}
 	}
-	
+
 	@Override
 	public ConnectionAtributesFiles getAtributes() {
-	
+
 		return this;
 	}
 
 	@Override
 	public ConnectionType getConnectionType() {
-		
+
 		return ConnectionType.SQLITE;
 	}
 
 	@Override
 	public void syncronize() {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	@Override
 	public String getName() {
 		return name;

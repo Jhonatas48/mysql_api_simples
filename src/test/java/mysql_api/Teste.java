@@ -25,7 +25,7 @@ public class Teste {
     public static void main(String[] args) throws InterruptedException {
 
 
-        ConnectionManager connectionManager1 = new ConnectionManager("teste1");
+        ConnectionManager connectionManager1 = new ConnectionManager("teste1", true);
         connectionManager1.addConnection(new SqliteConnection("connection1", "teste.db"));
         System.out.println("teste");
 //        
