@@ -17,7 +17,37 @@ public class SqliteConnection extends ConnectionAtributesFiles implements IConne
 	public SqliteConnection(String nameConnection , String nameFile) {
 		Checkers.validateStringNotNull(nameConnection, "nameConnection");
 		Checkers.validateStringNotNull(nameFile, "nameFile");
-		this.setNameFile(nameFile);
+		this.name = nameConnection;
+		
+		
+		Path path = Paths.get(nameFile);
+	    
+		if (path.isAbsolute()) {
+	        this.setNameFile(nameFile);
+	        
+	        // Se o nome do arquivo não contiver extensão, acrescenta ".db"
+	        if (!path.getFileName().toString().contains(".")) {
+	            nameFile += ".db";
+	        }
+	        
+	        return;
+	     }
+		
+		 if (nameFile.startsWith("./")) {
+	            // Obter o diretório de trabalho atual
+	            Path currentDirectory = Paths.get(System.getProperty("user.dir"));
+	            // Remover o "./" do caminho do arquivo e concatenar com o diretório atual
+	            String correctedPath = currentDirectory.resolve(nameFile.substring(2)).toString();
+	            nameFile = correctedPath;
+	     } 
+		 
+		 String[] nameWiExtension = nameFile.split("\\.");
+	        
+		if(nameWiExtension.length < 2) {
+			this.setNameFile(nameFile+".db");
+			return;
+		}
+		this.setNameFile(nameWiExtension[0]+".db");
 	}
 	
 	@Override
