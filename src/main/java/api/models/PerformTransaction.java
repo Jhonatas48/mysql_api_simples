@@ -466,10 +466,6 @@ public class PerformTransaction {
     	Checkers.validadeObjectNotNull(connectionManager, "connectionManager");
     	Checkers.isNotEmpty(sql);
     	Checkers.validadeObjectNotNull(transactionType,"TransactionType");
-
-		if (connectionManager.disableLog) {
-			return true;
-		}
     	
     	if(transactionType != TransactionType.DELETE) {
     	

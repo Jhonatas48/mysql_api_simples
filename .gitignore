@@ -18,4 +18,3 @@ pom.xml.asc
 /.prepl-port
 .gitignore
 .git/**
-.idea/
