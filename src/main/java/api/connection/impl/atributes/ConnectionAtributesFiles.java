@@ -21,8 +21,6 @@ public abstract class ConnectionAtributesFiles implements IConnectionAtributeFil
 			
 			throw new NullPointerException("File Name is null");
 		}
-
-		file = new File(nameFile);
 		
 		if(!file.exists()) {
 			//file.mkdir();
@@ -57,8 +55,10 @@ public abstract class ConnectionAtributesFiles implements IConnectionAtributeFil
 
 	@Override
 	public void setNameFile(String name) {
-
-		nameFile= new File(name).getName().split("\\.")[0] + ".db";
+		
+		this.nameFile= name;
+		file = new File(name);
+		nameFile= file.getName();
 	}
 	
 	@Override
