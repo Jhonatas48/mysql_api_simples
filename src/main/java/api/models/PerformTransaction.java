@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -214,6 +215,11 @@ public class PerformTransaction {
         		 
         	  for(int id =0;id<builder.getData().length;id++) {
         		 
+					if (builder.getData()[id] == null) {
+						stmt.setNull(counter, Types.NULL);
+						counter++;
+						continue;
+					}
         		  valuesFields.add(builder.getData()[id]);
         		 stmt.setObject(counter,""+builder.getData()[id]+"");
         		  counter++;
@@ -315,7 +321,13 @@ public class PerformTransaction {
             for(Update builder:builders) {
           	  
           	  for(String column: builder.getValue().getKeys()) {
-          		  
+          		
+          		  if (builder.getValue().get(column) == null) {
+					stament.setNull(counter, Types.NULL);
+					counter++;
+					continue;
+          		  }
+          		
           		  valuesFields.add(builder.getValue().get(column));
           		  stament.setObject(counter,""+builder.getValue().get(column)+"");
           		  counter++;
